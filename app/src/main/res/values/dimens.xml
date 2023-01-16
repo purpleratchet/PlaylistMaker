@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_margin_start">16dp</dimen>
+    <dimen name="activity_margin_top">42dp</dimen>
+    <dimen name="activity_margin_bottom">21dp</dimen>
+    <dimen name="activity_text_size_big">22sp</dimen>
+    <dimen name="activity_text_size_small">16sp</dimen>
+    <dimen name="activity_margin_end">12dp</dimen>
+</resources>

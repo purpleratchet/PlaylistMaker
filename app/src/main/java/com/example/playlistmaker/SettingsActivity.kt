@@ -9,10 +9,9 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val backImage = findViewById<ImageView>(R.id.imageView)
+        val backImage = findViewById<ImageView>(R.id.backButton)
         backImage.setOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+            finish()
         }
     }
 }

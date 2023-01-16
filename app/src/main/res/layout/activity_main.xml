@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:padding="16dp"
-        android:textSize="22sp"
+        android:textSize="@dimen/activity_text_size_big"
         android:textColor="@color/white"/>
 
     <LinearLayout
@@ -25,14 +25,14 @@
         >
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="16dp"
             android:textColor="@color/black"
             android:text="@string/search"
-            android:textSize="22sp"
+            android:textSize="@dimen/activity_text_size_big"
             android:textAllCaps="false"
             android:letterSpacing=".05"
             android:backgroundTint="@color/white"
@@ -42,7 +42,7 @@
             app:cornerRadius="16dp"
             />
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/mediateka"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -51,7 +51,7 @@
             android:backgroundTint="@color/white"
             android:textAllCaps="false"
             android:text="@string/mediateka"
-            android:textSize="22sp"
+            android:textSize="@dimen/activity_text_size_big"
             android:letterSpacing=".05"
             app:icon="@drawable/ic_mediateka"
             app:iconGravity="textStart"
@@ -67,7 +67,7 @@
             android:layout_marginBottom="28dp"
             android:textColor="@color/black"
             android:textAllCaps="false"
-            android:textSize="22sp"
+            android:textSize="@dimen/activity_text_size_big"
             android:backgroundTint="@color/white"
             android:text="@string/settings"
             android:letterSpacing=".05"
