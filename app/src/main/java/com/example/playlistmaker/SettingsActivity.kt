@@ -15,15 +15,6 @@ class SettingsActivity : AppCompatActivity() {
         backImage.setOnClickListener {
             finish()
         }
-//        val themeChanger = findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.switcher)
-//        themeChanger.setOnClickListener {
-//           onNightModeChanged(AppCompatDelegate.MODE_NIGHT_YES)
-//        }
-//        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-//        when (currentNightMode) {
-//            Configuration.UI_MODE_NIGHT_NO -> {} // Night mode is not active, we're using the light theme.
-//            Configuration.UI_MODE_NIGHT_YES -> {} // Night mode is active, we're using dark theme.
-//        }
         val shareApp = findViewById<TextView>(R.id.textView3)
         shareApp.setOnClickListener {
             val sendIntent = Intent(Intent.ACTION_SEND)
@@ -35,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
         supportApp.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SENDTO)
             shareIntent.data = Uri.parse("mailto:")
-            shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("danparkin@yandex.ru"))
+            shareIntent.putExtra(Intent.EXTRA_EMAIL, R.string.mailAddress)
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject))
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.emailText))
             startActivity(Intent.createChooser(shareIntent,"Support"))

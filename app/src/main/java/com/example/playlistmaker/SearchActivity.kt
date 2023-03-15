@@ -1,7 +1,6 @@
 package com.example.playlistmaker
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -12,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageView
 
 class SearchActivity : AppCompatActivity() {
+    val editText = findViewById<EditText>(R.id.inputEditText)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -19,7 +19,6 @@ class SearchActivity : AppCompatActivity() {
         backImage.setOnClickListener {
             finish()
         }
-        val editText = findViewById<EditText>(R.id.inputEditText)
         val clearButton = findViewById<ImageView>(R.id.clear_text)
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -36,14 +35,14 @@ class SearchActivity : AppCompatActivity() {
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val editText = findViewById<EditText>(R.id.inputEditText)
+
         outState.putString("myKey", editText.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val myValue = savedInstanceState.getString("myKey")
-        val editText = findViewById<EditText>(R.id.inputEditText)
+
         editText.setText(myValue)
     }
 }
