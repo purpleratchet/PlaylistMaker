@@ -9,8 +9,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+        android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
             android:name=".MediaActivity"
@@ -31,6 +32,7 @@
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
+                android:configChanges="uiMode"
                 android:value="" />
         </activity>
         <activity
