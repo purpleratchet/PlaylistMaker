@@ -56,6 +56,7 @@
                 android:layout_height="@dimen/dot_size"
                 android:src="@drawable/kruzhok"
                 android:layout_gravity="center_vertical"
+                android:backgroundTint="?attr/colorSecondaryVariant"
                 android:layout_marginHorizontal="5dp"/>
 
             <TextView
