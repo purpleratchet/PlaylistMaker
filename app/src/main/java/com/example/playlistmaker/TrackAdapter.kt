@@ -25,7 +25,7 @@ class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<Track
             Glide.with(itemView.context).load(model.artworkUrl100)
                 .centerCrop()// Отрисовка фотографии артиста с помощью библиотеки Glide
                 .error(R.drawable.zaglushka)
-                .transform(RoundedCorners(10))
+                .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corners)))
                 .into(image)
         }
     }

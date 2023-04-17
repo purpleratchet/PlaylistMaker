@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/track_image"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/picture_size"
+        android:layout_height="@dimen/picture_size"
         android:src="@drawable/zaglushka"
         android:gravity="center_vertical"
         android:layout_marginTop="8dp"
@@ -27,6 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Track Name"
+            android:textColor="?attr/colorSecondary"
+            android:lines="1"
+            android:ellipsize="end"
             android:textSize="16sp"
             android:textStyle="bold"
             android:fontFamily="@font/ys_display_regular"/>
@@ -38,25 +41,29 @@
 
             <TextView
                 android:id="@+id/track_artist"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:lines="1"
+                android:ellipsize="end"
                 android:layout_height="wrap_content"
                 android:text="Artist Name"
-                android:textSize="11sp"
+                android:textColor="?attr/colorSecondaryVariant"
+                android:textSize="@dimen/textview_size_small"
                 android:fontFamily="@font/ys_display_regular"/>
 
             <ImageView
-                android:layout_width="3dp"
-                android:layout_height="3dp"
+                android:layout_width="@dimen/dot_size"
+                android:layout_height="@dimen/dot_size"
                 android:src="@drawable/kruzhok"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginHorizontal="5dp"/>
 
             <TextView
                 android:id="@+id/track_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
+                android:textSize="@dimen/textview_size_small"
+                android:textColor="?attr/colorSecondaryVariant"
                 android:text="4:55"
                 android:fontFamily="@font/ys_display_regular"/>
         </LinearLayout>
@@ -68,6 +75,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/arrow_next"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="24dp"/>
+        android:layout_marginEnd="20dp"/>
 
 </LinearLayout>
