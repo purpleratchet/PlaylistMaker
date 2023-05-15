@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
     class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,7 +23,7 @@ class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<Track
         fun bind(model: Track) {
             sourceName.text = model.trackName
             artistName.text = model.artistName
-            trackLength.text = model.trackTime
+            trackLength.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
             Glide.with(itemView.context).load(model.artworkUrl100)
                 .centerCrop()// Отрисовка фотографии артиста с помощью библиотеки Glide
                 .error(R.drawable.zaglushka)

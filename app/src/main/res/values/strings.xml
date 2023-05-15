@@ -15,4 +15,7 @@
     <string name="linkLegacy">https://yandex.ru/legal/practicum_offer/</string>
     <string name="mailAddress">danparkin@yandex.ru</string>
     <string name="mailto">mailto:</string>
+    <string name="error_not_found">Ничего не нашлось</string>
+    <string name="error404">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="clear">Обновить</string>
 </resources>
