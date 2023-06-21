@@ -1,7 +1,6 @@
 package com.example.playlistmaker
 
 import android.view.LayoutInflater
-import android.view.RoundedCorner
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -23,10 +22,11 @@ class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<Track
         fun bind(model: Track) {
             sourceName.text = model.trackName
             artistName.text = model.artistName
-            trackLength.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
+            trackLength.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
             Glide.with(itemView.context).load(model.artworkUrl100)
                 .centerCrop()// Отрисовка фотографии артиста с помощью библиотеки Glide
                 .error(R.drawable.zaglushka)
+                .placeholder(R.drawable.zaglushka)
                 .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corners)))
                 .into(image)
         }

@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Entity
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,9 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,21 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
-
-data class Track(
-    val id: Long,
-    val trackName: String,
-    val artistName: String,
-    val trackTime: Int,
-    val artworkUrl100: String
-)
-
-interface AppleApiService {
-
-    @GET("search?entity=song")
-    fun search(@Query("term", encoded = false) text: String): Call<TracksResponse>
-
-}
 
 class SearchActivity : AppCompatActivity() {
 
@@ -55,15 +37,11 @@ class SearchActivity : AppCompatActivity() {
         val backImage = findViewById<ImageView>(R.id.backButton)
         val zaglushkaPustoi = findViewById<ImageView>(R.id.zaglushka_pustoi)
         val zaglushkaPustoiText = findViewById<TextView>(R.id.zaglushka_pustoi_text)
-        val zaglushkaInet = findViewById<ImageView>(R.id.zaglushka_inet)
-        val zaglushkaInetText = findViewById<TextView>(R.id.zaglushka_inet_text)
         val zaglushkaInetButton = findViewById<Button>(R.id.zaglushka_inet_button)
 
-        zaglushkaPustoi.visibility = GONE
-        zaglushkaPustoiText.visibility = GONE
-        zaglushkaInet.visibility = GONE
-        zaglushkaInetText.visibility = GONE
-        zaglushkaInetButton.visibility = GONE
+        val trackAdapter = TrackAdapter(tracks)
+        val recyclerView: RecyclerView = findViewById(R.id.recycler)
+        recyclerView.adapter = trackAdapter
 
         backImage.setOnClickListener {
             finish()
@@ -79,14 +57,17 @@ class SearchActivity : AppCompatActivity() {
         })
         clearButton.setOnClickListener {
             editText.setText("")
+            tracks.clear()
+            trackAdapter.notifyDataSetChanged()
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
+            zaglushkaPustoi.visibility = GONE
+            zaglushkaPustoiText.visibility = GONE
+            zaglushkaInetButton.visibility = GONE
         }
 
-        val trackAdapter = TrackAdapter(tracks)
-        val recyclerView: RecyclerView = findViewById(R.id.recycler)
-        recyclerView.adapter = trackAdapter
+
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://itunes.apple.com/")
@@ -95,91 +76,98 @@ class SearchActivity : AppCompatActivity() {
 
         val appleApiService = retrofit.create<AppleApiService>()
 
+        fun searchTracks() {
+            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            appleApiService.search(editText.text.toString())
+                .enqueue(object : Callback<TracksResponse> {
+
+                    @SuppressLint("ResourceAsColor")
+                    override fun onResponse(
+                        call: Call<TracksResponse>,
+                        response: Response<TracksResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            tracks.clear()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                zaglushkaPustoi.visibility = GONE
+                                zaglushkaPustoiText.visibility = GONE
+                                zaglushkaInetButton.visibility = GONE
+                                tracks.addAll(response.body()?.results!!)
+                                trackAdapter.notifyDataSetChanged()
+                            } else {
+                                runOnUiThread {
+                                    tracks.clear()
+                                    trackAdapter.notifyDataSetChanged()
+                                    zaglushkaPustoiText.setText(R.string.error_not_found)
+                                    if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                                        zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi_night)
+                                        zaglushkaPustoiText.setTextColor(R.color.white)
+                                    } else {
+                                        zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi)
+                                        zaglushkaPustoiText.setTextColor(R.color.black)
+                                    }
+                                    zaglushkaPustoi.visibility = VISIBLE
+                                    zaglushkaPustoiText.visibility = VISIBLE
+                                    zaglushkaInetButton.visibility = GONE
+                                }
+                            }
+                        } else {
+                            runOnUiThread {
+                                zaglushkaPustoiText.setText(R.string.error404)
+                                if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                                    zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
+                                    zaglushkaPustoiText.setTextColor(R.color.white)
+                                    zaglushkaInetButton.setTextColor(R.color.black)
+                                    zaglushkaInetButton.setBackgroundColor(R.color.white)
+                                } else {
+                                    zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
+                                    zaglushkaPustoiText.setTextColor(R.color.black)
+                                    zaglushkaInetButton.setTextColor(R.color.white)
+                                    zaglushkaInetButton.setBackgroundColor(R.color.black)
+                                }
+                                zaglushkaPustoi.visibility = VISIBLE
+                                zaglushkaPustoiText.visibility = VISIBLE
+                                zaglushkaInetButton.visibility = VISIBLE
+                            }
+                        }
+                    }
+
+                    @SuppressLint("ResourceAsColor")
+                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                        runOnUiThread {
+                            zaglushkaPustoiText.setText(R.string.error404)
+                            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                                zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
+                                zaglushkaPustoiText.setTextColor(R.color.white)
+                                zaglushkaInetButton.setTextColor(R.color.black)
+                                zaglushkaInetButton.setBackgroundColor(R.color.white)
+                            } else {
+                                zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
+                                zaglushkaPustoiText.setTextColor(R.color.black)
+                                zaglushkaInetButton.setTextColor(R.color.white)
+                                zaglushkaInetButton.setBackgroundColor(R.color.black)
+                            }
+                            zaglushkaPustoi.visibility = VISIBLE
+                            zaglushkaPustoiText.visibility = VISIBLE
+                            zaglushkaInetButton.visibility = VISIBLE
+                        }
+                    }
+
+                })
+        }
 
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-                val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                appleApiService.search(editText.text.toString())
-                    .enqueue(object : Callback<TracksResponse> {
 
-                        @SuppressLint("ResourceAsColor")
-                        override fun onResponse(
-                            call: Call<TracksResponse>,
-                            response: Response<TracksResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                tracks.clear()
-                                if (response.body()?.results?.isNotEmpty() == true) {
-                                    tracks.addAll(response.body()?.results!!)
-                                    trackAdapter.notifyDataSetChanged()
-                                } else {
-                                    runOnUiThread {
-                                        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                                            zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi_night)
-                                            zaglushkaPustoiText.setTextColor(R.color.white)
-                                        } else {
-                                            zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi)
-                                            zaglushkaPustoiText.setTextColor(R.color.black)
-                                        }
-                                        zaglushkaPustoi.visibility = VISIBLE
-                                        zaglushkaPustoiText.visibility = VISIBLE
-                                        zaglushkaInet.visibility = GONE
-                                        zaglushkaInetText.visibility = GONE
-                                        zaglushkaInetButton.visibility = GONE
-                                    }
-                                }
-                            } else {
-                                runOnUiThread {
-                                    if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                                        zaglushkaInet.setImageResource(R.drawable.zaglushka_inet_night)
-                                        zaglushkaInetText.setTextColor(R.color.white)
-                                        zaglushkaInetButton.setTextColor(R.color.black)
-                                        zaglushkaInetButton.setBackgroundColor(R.color.white)
-                                    } else {
-                                        zaglushkaInet.setImageResource(R.drawable.zaglushka_inet)
-                                        zaglushkaInetText.setTextColor(R.color.black)
-                                        zaglushkaInetButton.setTextColor(R.color.white)
-                                        zaglushkaInetButton.setBackgroundColor(R.color.black)
-                                    }
-                                    zaglushkaPustoi.visibility = GONE
-                                    zaglushkaPustoiText.visibility = GONE
-                                    zaglushkaInet.visibility = VISIBLE
-                                    zaglushkaInetText.visibility = VISIBLE
-                                    zaglushkaInetButton.visibility = VISIBLE
-                                }
-                            }
-                        }
-
-                        @SuppressLint("ResourceAsColor")
-                        override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                            runOnUiThread {
-                                if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                                    zaglushkaInet.setImageResource(R.drawable.zaglushka_inet_night)
-                                    zaglushkaInetText.setTextColor(R.color.white)
-                                    zaglushkaInetButton.setTextColor(R.color.black)
-                                    zaglushkaInetButton.setBackgroundColor(R.color.white)
-                                } else {
-                                    zaglushkaInet.setImageResource(R.drawable.zaglushka_inet)
-                                    zaglushkaInetText.setTextColor(R.color.black)
-                                    zaglushkaInetButton.setTextColor(R.color.white)
-                                    zaglushkaInetButton.setBackgroundColor(R.color.black)
-                                }
-                                zaglushkaPustoi.visibility = GONE
-                                zaglushkaPustoiText.visibility = GONE
-                                zaglushkaInet.visibility = VISIBLE
-                                zaglushkaInetText.visibility = VISIBLE
-                                zaglushkaInetButton.visibility = VISIBLE
-                            }
-                        }
-
-                    })
-
-
-
+                searchTracks()
                 true
             }
             false
+        }
+
+        zaglushkaInetButton.setOnClickListener {
+            searchTracks()
         }
 
     }

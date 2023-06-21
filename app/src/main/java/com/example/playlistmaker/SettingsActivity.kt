@@ -14,7 +14,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        var sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         val isDarkMode = sharedPrefs.getBoolean("isDarkMode", false)
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -29,7 +29,7 @@ class SettingsActivity : AppCompatActivity() {
         val switcher = findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.switcher)
         switcher.setOnCheckedChangeListener { _, isChecked ->
             // установка темы в зависимости от состояния Switchmaterial
-            val sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+            sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
             val editor = sharedPrefs.edit()
             editor.putBoolean("isDarkMode", isChecked)
             editor.apply()
