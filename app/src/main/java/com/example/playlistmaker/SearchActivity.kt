@@ -116,14 +116,14 @@ class SearchActivity : AppCompatActivity() {
                                 zaglushkaPustoiText.setText(R.string.error404)
                                 if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
                                     zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
-                                    zaglushkaPustoiText.setTextColor(R.color.white)
-                                    zaglushkaInetButton.setTextColor(R.color.black)
-                                    zaglushkaInetButton.setBackgroundColor(R.color.white)
+                                    zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
+                                    zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
+                                    zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                                 } else {
                                     zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-                                    zaglushkaPustoiText.setTextColor(R.color.black)
-                                    zaglushkaInetButton.setTextColor(R.color.white)
-                                    zaglushkaInetButton.setBackgroundColor(R.color.black)
+                                    zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
+                                    zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
+                                    zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                                 }
                                 zaglushkaPustoi.visibility = VISIBLE
                                 zaglushkaPustoiText.visibility = VISIBLE
@@ -138,14 +138,14 @@ class SearchActivity : AppCompatActivity() {
                             zaglushkaPustoiText.setText(R.string.error404)
                             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
                                 zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
-                                zaglushkaPustoiText.setTextColor(R.color.white)
-                                zaglushkaInetButton.setTextColor(R.color.black)
-                                zaglushkaInetButton.setBackgroundColor(R.color.white)
+                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
+                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
+                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                             } else {
                                 zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-                                zaglushkaPustoiText.setTextColor(R.color.black)
-                                zaglushkaInetButton.setTextColor(R.color.white)
-                                zaglushkaInetButton.setBackgroundColor(R.color.black)
+                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
+                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
+                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                             }
                             zaglushkaPustoi.visibility = VISIBLE
                             zaglushkaPustoiText.visibility = VISIBLE
@@ -167,6 +167,9 @@ class SearchActivity : AppCompatActivity() {
         }
 
         zaglushkaInetButton.setOnClickListener {
+            zaglushkaPustoi.visibility = GONE
+            zaglushkaPustoiText.visibility = GONE
+            zaglushkaInetButton.visibility = GONE
             searchTracks()
         }
 
