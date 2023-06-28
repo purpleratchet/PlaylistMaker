@@ -88,6 +88,7 @@ class SearchActivity : AppCompatActivity() {
                     ) {
                         if (response.code() == 200) {
                             tracks.clear()
+                            trackAdapter.notifyDataSetChanged()
                             if (response.body()?.results?.isNotEmpty() == true) {
                                 zaglushkaPustoi.visibility = GONE
                                 zaglushkaPustoiText.visibility = GONE
@@ -112,6 +113,8 @@ class SearchActivity : AppCompatActivity() {
                                 }
                             }
                         } else {
+                            tracks.clear()
+                            trackAdapter.notifyDataSetChanged()
                             runOnUiThread {
                                 zaglushkaPustoiText.setText(R.string.error404)
                                 if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
@@ -135,17 +138,19 @@ class SearchActivity : AppCompatActivity() {
                     @SuppressLint("ResourceAsColor")
                     override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
                         runOnUiThread {
+                            tracks.clear()
+                            trackAdapter.notifyDataSetChanged()
                             zaglushkaPustoiText.setText(R.string.error404)
                             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
                                 zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
-                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
-                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
-                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
+//                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
+//                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
+//                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                             } else {
                                 zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
-                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
-                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
+//                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
+//                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
+//                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                             }
                             zaglushkaPustoi.visibility = VISIBLE
                             zaglushkaPustoiText.visibility = VISIBLE

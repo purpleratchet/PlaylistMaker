@@ -96,7 +96,7 @@
         android:textSize="19sp"
         android:paddingTop="16dp"
         android:visibility="gone"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorButtonNormal"
         />
     <Button
         android:id="@+id/zaglushka_inet_button"
@@ -107,7 +107,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@id/zaglushka_pustoi_text"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="?attr/colorButtonNormal"
         android:text="@string/clear"
         android:gravity="center_vertical|center_horizontal"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -116,7 +116,7 @@
         android:letterSpacing="0"
         android:textAlignment="center"
         android:visibility="gone"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnPrimary"
         />
 
 
