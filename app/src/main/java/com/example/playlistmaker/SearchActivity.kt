@@ -143,14 +143,8 @@ class SearchActivity : AppCompatActivity() {
                             zaglushkaPustoiText.setText(R.string.error404)
                             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
                                 zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
-//                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
-//                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
-//                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                             } else {
                                 zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-//                                zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
-//                                zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
-//                                zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
                             }
                             zaglushkaPustoi.visibility = VISIBLE
                             zaglushkaPustoiText.visibility = VISIBLE
