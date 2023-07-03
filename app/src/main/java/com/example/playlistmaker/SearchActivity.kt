@@ -23,8 +23,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 class SearchActivity : AppCompatActivity() {
 
@@ -77,7 +75,6 @@ class SearchActivity : AppCompatActivity() {
         val appleApiService = retrofit.create<AppleApiService>()
 
         fun searchTracks() {
-            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             appleApiService.search(editText.text.toString())
                 .enqueue(object : Callback<TracksResponse> {
 
@@ -100,13 +97,7 @@ class SearchActivity : AppCompatActivity() {
                                     tracks.clear()
                                     trackAdapter.notifyDataSetChanged()
                                     zaglushkaPustoiText.setText(R.string.error_not_found)
-                                    if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                                        zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi_night)
-                                        zaglushkaPustoiText.setTextColor(R.color.white)
-                                    } else {
-                                        zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi)
-                                        zaglushkaPustoiText.setTextColor(R.color.black)
-                                    }
+                                    zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi)
                                     zaglushkaPustoi.visibility = VISIBLE
                                     zaglushkaPustoiText.visibility = VISIBLE
                                     zaglushkaInetButton.visibility = GONE
@@ -117,17 +108,7 @@ class SearchActivity : AppCompatActivity() {
                             trackAdapter.notifyDataSetChanged()
                             runOnUiThread {
                                 zaglushkaPustoiText.setText(R.string.error404)
-                                if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                                    zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
-                                    zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
-                                    zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
-                                    zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
-                                } else {
-                                    zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-                                    zaglushkaPustoiText.setTextColor(com.google.android.material.R.attr.colorSecondary)
-                                    zaglushkaInetButton.setTextColor(com.google.android.material.R.attr.colorOnPrimary)
-                                    zaglushkaInetButton.setBackgroundColor(com.google.android.material.R.attr.colorSecondary)
-                                }
+                                zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
                                 zaglushkaPustoi.visibility = VISIBLE
                                 zaglushkaPustoiText.visibility = VISIBLE
                                 zaglushkaInetButton.visibility = VISIBLE
@@ -141,11 +122,7 @@ class SearchActivity : AppCompatActivity() {
                             tracks.clear()
                             trackAdapter.notifyDataSetChanged()
                             zaglushkaPustoiText.setText(R.string.error404)
-                            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                                zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet_night)
-                            } else {
-                                zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-                            }
+                            zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
                             zaglushkaPustoi.visibility = VISIBLE
                             zaglushkaPustoiText.visibility = VISIBLE
                             zaglushkaInetButton.visibility = VISIBLE
