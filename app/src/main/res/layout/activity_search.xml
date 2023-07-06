@@ -42,6 +42,8 @@
             android:autofillHints="name"
             android:maxLength="15"
             android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:inputType="text"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
@@ -73,4 +75,49 @@
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@id/inputEditText"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <ImageView
+        android:id="@+id/zaglushka_pustoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/zaglushka_pustoi"
+        app:layout_constraintTop_toBottomOf="@+id/inputEditText"
+        android:layout_marginTop="110dp"
+        android:visibility="gone"
+        />
+    <TextView
+        android:id="@+id/zaglushka_pustoi_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/error_not_found"
+        app:layout_constraintTop_toBottomOf="@+id/zaglushka_pustoi"
+        android:gravity="center"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="19sp"
+        android:paddingTop="16dp"
+        android:visibility="gone"
+        android:textColor="?attr/colorButtonNormal"
+        />
+    <Button
+        android:id="@+id/zaglushka_inet_button"
+        style="@style/buttonClear"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/zaglushka_pustoi_text"
+        android:backgroundTint="?attr/colorButtonNormal"
+        android:text="@string/clear"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:fontFamily="@font/ys_display_medium"
+        android:textAllCaps="false"
+        android:letterSpacing="0"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:textColor="?attr/colorOnPrimary"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
