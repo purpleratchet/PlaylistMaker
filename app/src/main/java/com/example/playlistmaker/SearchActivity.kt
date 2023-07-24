@@ -1,12 +1,14 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -17,6 +19,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,18 +29,31 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 class SearchActivity : AppCompatActivity() {
-
     private var tracks = mutableListOf<Track>()
+    private var history = mutableListOf<Track>()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        val sharedPrefs = getSharedPreferences("prefs_track", MODE_PRIVATE)
+        var json = sharedPrefs.getString("TRACKS", "")
+        val listType = object : TypeToken<MutableList<Track>>() {}.type
+        try {
+            history = Gson().fromJson(json, listType)
+        } catch (e: Exception) {
+            Log.d(TAG, "Empty history")
+        }
+
+
         val editText = findViewById<EditText>(R.id.inputEditText)
+        val searched = findViewById<TextView>(R.id.searched)
+        val clearHistory = findViewById<Button>(R.id.clear_history)
         val backImage = findViewById<ImageView>(R.id.backButton)
         val zaglushkaPustoi = findViewById<ImageView>(R.id.zaglushka_pustoi)
         val zaglushkaPustoiText = findViewById<TextView>(R.id.zaglushka_pustoi_text)
         val zaglushkaInetButton = findViewById<Button>(R.id.zaglushka_inet_button)
-
+        val historyAdapter = TrackAdapter(history)
         val trackAdapter = TrackAdapter(tracks)
         val recyclerView: RecyclerView = findViewById(R.id.recycler)
         recyclerView.adapter = trackAdapter
@@ -49,6 +66,18 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                if (history.size > 0) {
+                    Log.d(TAG, "мы в фокусе текствотч")
+                    searched.visibility = if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
+                    clearHistory.visibility =
+                        if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
+                    recyclerView.visibility =
+                        if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
+                    json = sharedPrefs.getString("TRACKS", "")
+                    history = Gson().fromJson(json, listType)
+                    recyclerView.adapter = historyAdapter
+                    historyAdapter.notifyDataSetChanged()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -75,6 +104,8 @@ class SearchActivity : AppCompatActivity() {
         val appleApiService = retrofit.create<AppleApiService>()
 
         fun searchTracks() {
+            recyclerView.visibility = VISIBLE
+            recyclerView.adapter = trackAdapter
             appleApiService.search(editText.text.toString())
                 .enqueue(object : Callback<TracksResponse> {
 
@@ -135,7 +166,6 @@ class SearchActivity : AppCompatActivity() {
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-
                 searchTracks()
                 true
             }
@@ -149,6 +179,63 @@ class SearchActivity : AppCompatActivity() {
             searchTracks()
         }
 
+        trackAdapter.setOnTrackClickListener(object : OnTrackClickListener {
+            override fun onTrackClick(position: Int) {
+                val editor = sharedPrefs.edit()
+                if ((history.size <= 9) and !isTrackInHistory(tracks[position])) {
+                    history.add(tracks[position])
+                    json = Gson().toJsonTree(history).asJsonArray.toString()
+                    editor.putString("TRACKS", json).apply()
+                }
+                else if ((history.size == 10) and !isTrackInHistory(tracks[position])) {
+                    history.removeAt(0)
+                    history.add(tracks[position])
+                    json = Gson().toJsonTree(history).asJsonArray.toString()
+                    editor.putString("TRACKS", json).apply()
+                }
+                else if (isTrackInHistory(tracks[position])) {
+                    lateinit var songbuf: Track
+                    for (song in history) {
+                        if (song.trackId == tracks[position].trackId) {
+                            songbuf = song
+                        }
+                    }
+                    history.add(tracks[position])
+                    history.remove(songbuf)
+                    json = Gson().toJsonTree(history).asJsonArray.toString()
+                    editor.putString("TRACKS", json).apply()
+                }
+            }
+        })
+        editText.setOnFocusChangeListener { view, hasFocus ->
+            if (history.size > 0) {
+                Log.d(TAG, "мы в фокусе сете")
+
+                searched.visibility = if (hasFocus and editText.text.isEmpty()) VISIBLE else GONE
+                clearHistory.visibility =
+                    if (hasFocus and editText.text.isEmpty()) VISIBLE else GONE
+                json = sharedPrefs.getString("TRACKS", "")
+                history = Gson().fromJson(json, listType)
+                history.reverse()
+                recyclerView.adapter = historyAdapter
+                historyAdapter.notifyDataSetChanged()
+
+            }
+        }
+        clearHistory.setOnClickListener {
+            history.clear()
+            historyAdapter.notifyDataSetChanged()
+            sharedPrefs.edit().putString("TRACKS", "").apply()
+            searched.visibility = GONE
+            clearHistory.visibility = GONE
+        }
+
+    }
+    fun isTrackInHistory(track: Track): Boolean {
+        for (song in history) {
+            if (track.trackId == song.trackId) return true
+        }
+        return false
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

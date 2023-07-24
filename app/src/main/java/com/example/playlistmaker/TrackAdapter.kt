@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,11 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+
+    private var listener: OnTrackClickListener? = null
+    fun setOnTrackClickListener(listener: OnTrackClickListener) {
+        this.listener = listener
+    }
     class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val sourceName: TextView = itemView.findViewById(R.id.track_name)
@@ -20,6 +27,7 @@ class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<Track
         private val image: ImageView = itemView.findViewById(R.id.track_image)
 
         fun bind(model: Track) {
+            //Log.d(TAG, "${model.id}")
             sourceName.text = model.trackName
             artistName.text = model.artistName
             trackLength.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
@@ -29,6 +37,7 @@ class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<Track
                 .placeholder(R.drawable.zaglushka)
                 .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corners)))
                 .into(image)
+
         }
     }
 
@@ -42,6 +51,9 @@ class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<Track
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = tracks[position]
         holder.bind(track)
+        holder.itemView.setOnClickListener {
+            listener?.onTrackClick(position)
+        }
     }
 
 }
