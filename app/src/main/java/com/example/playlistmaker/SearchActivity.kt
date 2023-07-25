@@ -80,7 +80,21 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                if (history.size > 0) {
+                    Log.d(TAG, "мы в фокусе текствотч")
+                    searched.visibility = if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
+                    clearHistory.visibility =
+                        if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
+                    recyclerView.visibility =
+                        if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
+                    json = sharedPrefs.getString("TRACKS", "")
+                    history = Gson().fromJson(json, listType)
+                    recyclerView.adapter = historyAdapter
+                    historyAdapter.notifyDataSetChanged()
+                }
+            }
         })
         clearButton.setOnClickListener {
             editText.setText("")
@@ -92,6 +106,10 @@ class SearchActivity : AppCompatActivity() {
             zaglushkaPustoi.visibility = GONE
             zaglushkaPustoiText.visibility = GONE
             zaglushkaInetButton.visibility = GONE
+            json = sharedPrefs.getString("TRACKS", "")
+            history = Gson().fromJson(json, listType)
+            recyclerView.adapter = historyAdapter
+            historyAdapter.notifyDataSetChanged()
         }
 
 
@@ -183,25 +201,28 @@ class SearchActivity : AppCompatActivity() {
             override fun onTrackClick(position: Int) {
                 val editor = sharedPrefs.edit()
                 if ((history.size <= 9) and !isTrackInHistory(tracks[position])) {
-                    history.add(tracks[position])
+                    history.add(0, tracks[position])
                     json = Gson().toJsonTree(history).asJsonArray.toString()
                     editor.putString("TRACKS", json).apply()
+                    Log.d(TAG, "добавили трек в историю (9 и меньше)")
                 }
                 else if ((history.size == 10) and !isTrackInHistory(tracks[position])) {
-                    history.removeAt(0)
-                    history.add(tracks[position])
+                    Log.d(TAG, "добавили трек в историю (10)")
+                    history.add(0, tracks[position])
+                    history.removeLast()
                     json = Gson().toJsonTree(history).asJsonArray.toString()
                     editor.putString("TRACKS", json).apply()
                 }
                 else if (isTrackInHistory(tracks[position])) {
+                    Log.d(TAG, "трек в истории")
                     lateinit var songbuf: Track
                     for (song in history) {
                         if (song.trackId == tracks[position].trackId) {
                             songbuf = song
                         }
                     }
-                    history.add(tracks[position])
                     history.remove(songbuf)
+                    history.add(0, tracks[position])
                     json = Gson().toJsonTree(history).asJsonArray.toString()
                     editor.putString("TRACKS", json).apply()
                 }
@@ -214,9 +235,9 @@ class SearchActivity : AppCompatActivity() {
                 searched.visibility = if (hasFocus and editText.text.isEmpty()) VISIBLE else GONE
                 clearHistory.visibility =
                     if (hasFocus and editText.text.isEmpty()) VISIBLE else GONE
+                recyclerView.visibility = if (hasFocus and editText.text.isEmpty()) VISIBLE else GONE
                 json = sharedPrefs.getString("TRACKS", "")
                 history = Gson().fromJson(json, listType)
-                history.reverse()
                 recyclerView.adapter = historyAdapter
                 historyAdapter.notifyDataSetChanged()
 
@@ -228,6 +249,7 @@ class SearchActivity : AppCompatActivity() {
             sharedPrefs.edit().putString("TRACKS", "").apply()
             searched.visibility = GONE
             clearHistory.visibility = GONE
+            recyclerView.visibility = GONE
         }
 
     }
