@@ -7,7 +7,9 @@
     <dimen name="activity_text_size_small">16sp</dimen>
     <dimen name="activity_margin_end">12dp</dimen>
     <dimen name="corners">2dp</dimen>
+    <dimen name="corners_cover">8dp</dimen>
     <dimen name="picture_size">45dp</dimen>
     <dimen name="textview_size_small">11sp</dimen>
     <dimen name="dot_size">3dp</dimen>
+    <dimen name="guideline_dimen">24dp</dimen>
 </resources>
