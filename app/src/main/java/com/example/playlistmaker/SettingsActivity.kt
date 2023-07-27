@@ -14,35 +14,23 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        var sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
-        val isDarkMode = sharedPrefs.getBoolean("isDarkMode", false)
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+
 
         val backImage = findViewById<ImageView>(R.id.backButton)
         backImage.setOnClickListener {
             finish()
         }
-        val switcher = findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.switcher)
-        switcher.setOnCheckedChangeListener { _, isChecked ->
-            // установка темы в зависимости от состояния Switchmaterial
-            sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
-            val editor = sharedPrefs.edit()
-            editor.putBoolean("isDarkMode", isChecked)
-            editor.apply()
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-            // перезагрузка активности, чтобы применить новую тему
-            val intent = Intent(this, this.javaClass)
-            finish()
-            startActivity(intent)
+
+        val themeSwitcher = findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.switcher)
+        themeSwitcher.isChecked = (applicationContext as App).getCurrentTheme()
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            val sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+            (applicationContext as App).switchTheme(checked)
+            sharedPrefs.edit()
+                .putBoolean("isDarkMode", checked)
+                .apply()
         }
+
 
         val shareApp = findViewById<TextView>(R.id.textView3)
         shareApp.setOnClickListener {
