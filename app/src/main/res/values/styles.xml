@@ -43,4 +43,7 @@
         <item name="cornerRadius">54dp</item>
         <item name="android:textAlignment">center</item>
     </style>
+    <style name="trackPlaceholder">
+        <item name="cornerRadius">8dp</item>
+    </style>
 </resources>
