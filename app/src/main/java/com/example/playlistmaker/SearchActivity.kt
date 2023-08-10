@@ -5,8 +5,11 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,9 +18,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Adapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -32,6 +37,37 @@ import retrofit2.create
 class SearchActivity : AppCompatActivity() {
     private var tracks = mutableListOf<Track>()
     private var history = mutableListOf<Track>()
+    private lateinit var editText: EditText
+    private lateinit var searched: TextView
+    private lateinit var clearHistory: Button
+    private lateinit var backImage: ImageView
+    private lateinit var zaglushkaPustoi: ImageView
+    private lateinit var zaglushkaPustoiText: TextView
+    private lateinit var zaglushkaInetButton: Button
+    private lateinit var historyAdapter: TrackAdapter
+    private lateinit var trackAdapter: TrackAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://itunes.apple.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private var appleApiService = retrofit.create<AppleApiService>()
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
+    private val searchRunnable = Runnable { searchTracks() }
+    private val handler = Handler(Looper.getMainLooper())
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private var isClickAllowed = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -46,22 +82,29 @@ class SearchActivity : AppCompatActivity() {
             Log.d(TAG, "Empty history")
         }
 
+        editText = findViewById(R.id.inputEditText)
+        searched = findViewById(R.id.searched)
+        clearHistory = findViewById(R.id.clear_history)
+        backImage = findViewById(R.id.backButton)
+        zaglushkaPustoi = findViewById(R.id.zaglushka_pustoi)
+        zaglushkaPustoiText = findViewById(R.id.zaglushka_pustoi_text)
+        zaglushkaInetButton = findViewById(R.id.zaglushka_inet_button)
+        historyAdapter = TrackAdapter(history)
+        trackAdapter = TrackAdapter(tracks)
+        recyclerView = findViewById(R.id.recycler)
+        progressBar = findViewById(R.id.progressBar)
 
-        val editText = findViewById<EditText>(R.id.inputEditText)
-        val searched = findViewById<TextView>(R.id.searched)
-        val clearHistory = findViewById<Button>(R.id.clear_history)
-        val backImage = findViewById<ImageView>(R.id.backButton)
-        val zaglushkaPustoi = findViewById<ImageView>(R.id.zaglushka_pustoi)
-        val zaglushkaPustoiText = findViewById<TextView>(R.id.zaglushka_pustoi_text)
-        val zaglushkaInetButton = findViewById<Button>(R.id.zaglushka_inet_button)
-        val historyAdapter = TrackAdapter(history)
-        val trackAdapter = TrackAdapter(tracks)
-        val recyclerView: RecyclerView = findViewById(R.id.recycler)
+
+        appleApiService = retrofit.create()
+
         recyclerView.adapter = trackAdapter
 
         backImage.setOnClickListener {
             finish()
         }
+
+
+
         val clearButton = findViewById<ImageView>(R.id.clear_text)
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -72,13 +115,13 @@ class SearchActivity : AppCompatActivity() {
                     searched.visibility = if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
                     clearHistory.visibility =
                         if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
-                    recyclerView.visibility =
-                        if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
+                    recyclerView.visibility = if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
                     json = sharedPrefs.getString("TRACKS", "")
-                    history = Gson().fromJson(json, listType)
+                   history = Gson().fromJson(json, listType)
                     recyclerView.adapter = historyAdapter
                     historyAdapter.notifyDataSetChanged()
-                }
+               }
+               if (s!!.isNotEmpty()) searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -113,75 +156,6 @@ class SearchActivity : AppCompatActivity() {
             historyAdapter.notifyDataSetChanged()
         }
 
-
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://itunes.apple.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val appleApiService = retrofit.create<AppleApiService>()
-
-        fun searchTracks() {
-            recyclerView.visibility = VISIBLE
-            recyclerView.adapter = trackAdapter
-            appleApiService.search(editText.text.toString())
-                .enqueue(object : Callback<TracksResponse> {
-
-                    @SuppressLint("ResourceAsColor")
-                    override fun onResponse(
-                        call: Call<TracksResponse>,
-                        response: Response<TracksResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            tracks.clear()
-                            trackAdapter.notifyDataSetChanged()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                zaglushkaPustoi.visibility = GONE
-                                zaglushkaPustoiText.visibility = GONE
-                                zaglushkaInetButton.visibility = GONE
-                                tracks.addAll(response.body()?.results!!)
-                                trackAdapter.notifyDataSetChanged()
-                            } else {
-                                runOnUiThread {
-                                    tracks.clear()
-                                    trackAdapter.notifyDataSetChanged()
-                                    zaglushkaPustoiText.setText(R.string.error_not_found)
-                                    zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi)
-                                    zaglushkaPustoi.visibility = VISIBLE
-                                    zaglushkaPustoiText.visibility = VISIBLE
-                                    zaglushkaInetButton.visibility = GONE
-                                }
-                            }
-                        } else {
-                            tracks.clear()
-                            trackAdapter.notifyDataSetChanged()
-                            runOnUiThread {
-                                zaglushkaPustoiText.setText(R.string.error404)
-                                zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-                                zaglushkaPustoi.visibility = VISIBLE
-                                zaglushkaPustoiText.visibility = VISIBLE
-                                zaglushkaInetButton.visibility = VISIBLE
-                            }
-                        }
-                    }
-
-                    @SuppressLint("ResourceAsColor")
-                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                        runOnUiThread {
-                            tracks.clear()
-                            trackAdapter.notifyDataSetChanged()
-                            zaglushkaPustoiText.setText(R.string.error404)
-                            zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
-                            zaglushkaPustoi.visibility = VISIBLE
-                            zaglushkaPustoiText.visibility = VISIBLE
-                            zaglushkaInetButton.visibility = VISIBLE
-                        }
-                    }
-
-                })
-        }
-
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
@@ -200,53 +174,55 @@ class SearchActivity : AppCompatActivity() {
 
         historyAdapter.setOnTrackClickListener(object : OnTrackClickListener {
             override fun onTrackClick(position: Int) {
-                val trackForMedia = getSharedPreferences("prefs_track", MODE_PRIVATE)
-                val trackJson = Gson().toJson(history[position])
-                trackForMedia.edit()
-                    .putString("MEDIA", trackJson.toString())
-                    .apply()
-                val displayIntent = Intent(applicationContext, MediaActivity::class.java)
-                startActivity(displayIntent)
+                if (clickDebounce()) {
+                    val trackForMedia = getSharedPreferences("prefs_track", MODE_PRIVATE)
+                    val trackJson = Gson().toJson(history[position])
+                    trackForMedia.edit()
+                        .putString("MEDIA", trackJson.toString())
+                        .apply()
+                    val displayIntent = Intent(applicationContext, MediaActivity::class.java)
+                    startActivity(displayIntent)
+                }
             }
         })
 
         trackAdapter.setOnTrackClickListener(object : OnTrackClickListener {
             override fun onTrackClick(position: Int) {
-                val editor = sharedPrefs.edit()
-                if ((history.size <= 9) and !isTrackInHistory(tracks[position])) {
-                    history.add(0, tracks[position])
-                    json = Gson().toJsonTree(history).asJsonArray.toString()
-                    editor.putString("TRACKS", json).apply()
-                    Log.d(TAG, "добавили трек в историю (9 и меньше)")
-                }
-                else if ((history.size == 10) and !isTrackInHistory(tracks[position])) {
-                    Log.d(TAG, "добавили трек в историю (10)")
-                    history.add(0, tracks[position])
-                    history.removeLast()
-                    json = Gson().toJsonTree(history).asJsonArray.toString()
-                    editor.putString("TRACKS", json).apply()
-                }
-                else if (isTrackInHistory(tracks[position])) {
-                    Log.d(TAG, "трек в истории")
-                    lateinit var songbuf: Track
-                    for (song in history) {
-                        if (song.trackId == tracks[position].trackId) {
-                            songbuf = song
+                if (clickDebounce()) {
+                    val editor = sharedPrefs.edit()
+                    if ((history.size <= 9) and !isTrackInHistory(tracks[position])) {
+                        history.add(0, tracks[position])
+                        json = Gson().toJsonTree(history).asJsonArray.toString()
+                        editor.putString("TRACKS", json).apply()
+                        Log.d(TAG, "добавили трек в историю (9 и меньше)")
+                    } else if ((history.size == 10) and !isTrackInHistory(tracks[position])) {
+                        Log.d(TAG, "добавили трек в историю (10)")
+                        history.add(0, tracks[position])
+                        history.removeLast()
+                        json = Gson().toJsonTree(history).asJsonArray.toString()
+                        editor.putString("TRACKS", json).apply()
+                    } else if (isTrackInHistory(tracks[position])) {
+                        Log.d(TAG, "трек в истории")
+                        lateinit var songbuf: Track
+                        for (song in history) {
+                            if (song.trackId == tracks[position].trackId) {
+                                songbuf = song
+                            }
                         }
+                        history.remove(songbuf)
+                        history.add(0, tracks[position])
+                        json = Gson().toJsonTree(history).asJsonArray.toString()
+                        editor.putString("TRACKS", json).apply()
                     }
-                    history.remove(songbuf)
-                    history.add(0, tracks[position])
-                    json = Gson().toJsonTree(history).asJsonArray.toString()
-                    editor.putString("TRACKS", json).apply()
-                }
 
-                val trackForMedia = getSharedPreferences("prefs_track", MODE_PRIVATE)
-                val trackJson = Gson().toJson(tracks[position])
-                trackForMedia.edit()
-                    .putString("MEDIA", trackJson.toString())
-                    .apply()
-                val displayIntent = Intent(applicationContext, MediaActivity::class.java)
-                startActivity(displayIntent)
+                    val trackForMedia = getSharedPreferences("prefs_track", MODE_PRIVATE)
+                    val trackJson = Gson().toJson(tracks[position])
+                    trackForMedia.edit()
+                        .putString("MEDIA", trackJson.toString())
+                        .apply()
+                    val displayIntent = Intent(applicationContext, MediaActivity::class.java)
+                    startActivity(displayIntent)
+                }
             }
         })
         editText.setOnFocusChangeListener { view, hasFocus ->
@@ -294,8 +270,81 @@ class SearchActivity : AppCompatActivity() {
         editText.setText(myValue)
     }
 
+    fun searchTracks() {
+        progressBar.visibility = VISIBLE
+        recyclerView.visibility = GONE
+        zaglushkaPustoi.visibility = GONE
+        zaglushkaPustoiText.visibility = GONE
+        zaglushkaInetButton.visibility = GONE
+        recyclerView.adapter = trackAdapter
+        if (editText.text.isNotEmpty()) {
+            appleApiService.search(editText.text.toString())
+                .enqueue(object : Callback<TracksResponse> {
+                    @SuppressLint("ResourceAsColor")
+                    override fun onResponse(
+                        call: Call<TracksResponse>,
+                        response: Response<TracksResponse>
+                    ) {
+                        progressBar.visibility = GONE
+                        if (response.code() == 200) {
+                            tracks.clear()
+                            trackAdapter.notifyDataSetChanged()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                recyclerView.visibility = VISIBLE
+                                zaglushkaPustoi.visibility = GONE
+                                zaglushkaPustoiText.visibility = GONE
+                                zaglushkaInetButton.visibility = GONE
+                                tracks.addAll(response.body()?.results!!)
+                                trackAdapter.notifyDataSetChanged()
+                            } else {
+                                runOnUiThread {
+                                    tracks.clear()
+                                    trackAdapter.notifyDataSetChanged()
+                                    zaglushkaPustoiText.setText(R.string.error_not_found)
+                                    zaglushkaPustoi.setImageResource(R.drawable.zaglushka_pustoi)
+                                    zaglushkaPustoi.visibility = VISIBLE
+                                    zaglushkaPustoiText.visibility = VISIBLE
+                                    zaglushkaInetButton.visibility = GONE
+                                }
+                            }
+                        } else {
+                            tracks.clear()
+                            trackAdapter.notifyDataSetChanged()
+                            runOnUiThread {
+                                zaglushkaPustoiText.setText(R.string.error404)
+                                zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
+                                zaglushkaPustoi.visibility = VISIBLE
+                                zaglushkaPustoiText.visibility = VISIBLE
+                                zaglushkaInetButton.visibility = VISIBLE
+                            }
+                        }
+                    }
 
+                    @SuppressLint("ResourceAsColor")
+                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                        runOnUiThread {
+                            progressBar.visibility = GONE
 
+                            zaglushkaPustoiText.setText(R.string.error404)
+                            zaglushkaPustoi.setImageResource(R.drawable.zaglushka_inet)
+                            zaglushkaPustoi.visibility = VISIBLE
+                            zaglushkaPustoiText.visibility = VISIBLE
+                            zaglushkaInetButton.visibility = VISIBLE
+                        }
+                    }
+
+                })
+        }
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
 }
 
 
