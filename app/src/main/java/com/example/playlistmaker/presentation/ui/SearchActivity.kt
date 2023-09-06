@@ -1,11 +1,9 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -18,13 +16,18 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Adapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.OnTrackClickListener
+import com.example.playlistmaker.R
+import com.example.playlistmaker.presentation.TrackAdapter
+import com.example.playlistmaker.data.dto.TracksResponse
+import com.example.playlistmaker.data.dto.TrackResult
+import com.example.playlistmaker.data.network.AppleApiService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -35,8 +38,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 class SearchActivity : AppCompatActivity() {
-    private var tracks = mutableListOf<Track>()
-    private var history = mutableListOf<Track>()
+    private var tracks = mutableListOf<TrackResult>()
+    private var history = mutableListOf<TrackResult>()
     private lateinit var editText: EditText
     private lateinit var searched: TextView
     private lateinit var clearHistory: Button
@@ -58,6 +61,16 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val EXTRA_TRACK_ID = "trackId"
+        const val EXTRA_TRACK_NAME = "trackName"
+        const val EXTRA_ARTIST_NAME = "artistName"
+        const val EXTRA_TRACK_TIME = "trackTimeMillis"
+        const val EXTRA_TRACK_COVER = "trackCover"
+        const val EXTRA_COLLECTION_NAME = "collectionName"
+        const val EXTRA_RELEASE_DATE = "releaseDate"
+        const val EXTRA_PRIMARY_GENRE_NAME = "primaryGenreName"
+        const val EXTRA_COUNTRY = "country"
+        const val EXTRA_PREVIEW = "previewUrl"
     }
     private val searchRunnable = Runnable { searchTracks() }
     private val handler = Handler(Looper.getMainLooper())
@@ -75,9 +88,10 @@ class SearchActivity : AppCompatActivity() {
 
         val sharedPrefs = getSharedPreferences("prefs_track", MODE_PRIVATE)
         var json = sharedPrefs.getString("TRACKS", "")
-        val listType = object : TypeToken<MutableList<Track>>() {}.type
+        val listType = object : TypeToken<MutableList<TrackResult>>() {}.type
         try {
             history = Gson().fromJson(json, listType)
+            Log.d(TAG, history[0].toString())
         } catch (e: Exception) {
             Log.d(TAG, "Empty history")
         }
@@ -118,6 +132,7 @@ class SearchActivity : AppCompatActivity() {
                     recyclerView.visibility = if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
                     json = sharedPrefs.getString("TRACKS", "")
                    history = Gson().fromJson(json, listType)
+                    Log.d(TAG, history[0].toString())
                     recyclerView.adapter = historyAdapter
                     historyAdapter.notifyDataSetChanged()
                }
@@ -135,6 +150,7 @@ class SearchActivity : AppCompatActivity() {
                         if (editText.hasFocus() and (s?.isEmpty() == true)) VISIBLE else GONE
                     json = sharedPrefs.getString("TRACKS", "")
                     history = Gson().fromJson(json, listType)
+                    Log.d(TAG, history[0].toString())
                     recyclerView.adapter = historyAdapter
                     historyAdapter.notifyDataSetChanged()
                 }
@@ -152,6 +168,7 @@ class SearchActivity : AppCompatActivity() {
             zaglushkaInetButton.visibility = GONE
             json = sharedPrefs.getString("TRACKS", "")
             if (json != "") history = Gson().fromJson(json, listType)
+            try {Log.d(TAG, history[0].toString())} catch (e: NullPointerException) { Log.d(TAG, "null") }
             recyclerView.adapter = historyAdapter
             historyAdapter.notifyDataSetChanged()
         }
@@ -175,13 +192,20 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter.setOnTrackClickListener(object : OnTrackClickListener {
             override fun onTrackClick(position: Int) {
                 if (clickDebounce()) {
-                    val trackForMedia = getSharedPreferences("prefs_track", MODE_PRIVATE)
-                    val trackJson = Gson().toJson(history[position])
-                    trackForMedia.edit()
-                        .putString("MEDIA", trackJson.toString())
-                        .apply()
-                    val displayIntent = Intent(applicationContext, MediaActivity::class.java)
-                    startActivity(displayIntent)
+                    val intent = Intent(this@SearchActivity, MediaActivity::class.java).apply {
+                        putExtra(EXTRA_TRACK_ID, history[position].trackId)
+                        putExtra(EXTRA_TRACK_NAME, history[position].trackName)
+                        putExtra(EXTRA_ARTIST_NAME, history[position].artistName)
+                        putExtra(EXTRA_TRACK_TIME, history[position].trackTimeMillis)
+                        putExtra(EXTRA_TRACK_COVER, history[position].artworkUrl100)
+                        putExtra(EXTRA_COLLECTION_NAME, history[position].collectionName)
+                        putExtra(EXTRA_RELEASE_DATE, history[position].releaseDate)
+                        putExtra(EXTRA_PRIMARY_GENRE_NAME, history[position].primaryGenreName)
+                        putExtra(EXTRA_COUNTRY, history[position].country)
+                        putExtra(EXTRA_PREVIEW, history[position].previewUrl)
+                    }
+                    Log.e(TAG, history[position].toString())
+                    startActivity(intent)
                 }
             }
         })
@@ -203,7 +227,7 @@ class SearchActivity : AppCompatActivity() {
                         editor.putString("TRACKS", json).apply()
                     } else if (isTrackInHistory(tracks[position])) {
                         Log.d(TAG, "трек в истории")
-                        lateinit var songbuf: Track
+                        lateinit var songbuf: TrackResult
                         for (song in history) {
                             if (song.trackId == tracks[position].trackId) {
                                 songbuf = song
@@ -250,7 +274,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
     }
-    fun isTrackInHistory(track: Track): Boolean {
+    fun isTrackInHistory(track: TrackResult): Boolean {
         for (song in history) {
             if (track.trackId == song.trackId) return true
         }
