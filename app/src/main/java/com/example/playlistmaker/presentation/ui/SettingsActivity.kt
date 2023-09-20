@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,8 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,9 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        val themeSwitcher = findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.switcher)
+        val themeSwitcher = findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(
+            R.id.switcher
+        )
         themeSwitcher.isChecked = (applicationContext as App).getCurrentTheme()
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             val sharedPrefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
