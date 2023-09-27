@@ -9,9 +9,7 @@ import com.example.playlistmaker.domain.PlayerInteractor
 import com.example.playlistmaker.presentation.ui.MediaContract
 
 class MediaPresenter(
-    private val btnPlay: ImageView,
-    private val btnPause: ImageView,
-    private val progressTime: TextView,
+    private val view: MediaView,
     private val previewUrl: String?,
     private val playerInteractor: PlayerInteractor,
 ) : MediaContract.Presenter {
@@ -25,16 +23,15 @@ class MediaPresenter(
         }
 
         playerInteractor.preparePlayer(previewUrl ?: "", {}, {
-            progressTime.text = "00:00"
+            view.updateProgressTime("00:00")
             progressHandler.removeCallbacks(progressRunnable)
-            btnPlay.visibility = View.VISIBLE
-            btnPause.visibility = View.GONE
+            view.showPlayButton()
         })
     }
 
     private fun updateProgressTime() {
         val progress = playerInteractor.currentPosition()
-        progressTime.text = formatTime(progress)
+        view.updateProgressTime(formatTime(progress))
     }
 
     private fun formatTime(timeInMillis: Int): String {
@@ -44,22 +41,19 @@ class MediaPresenter(
     }
 
     override fun onPlayClicked() {
-        btnPlay.visibility = View.INVISIBLE
-        btnPause.visibility = View.VISIBLE
+        view.showPauseButton()
         playerInteractor.startAudio()
         progressHandler.post(progressRunnable)
     }
 
     override fun onPauseAudioClicked() {
-        btnPause.visibility = View.GONE
-        btnPlay.visibility = View.VISIBLE
+        view.showPlayButton()
         playerInteractor.pauseAudio()
         progressHandler.removeCallbacks(progressRunnable)
     }
 
     override fun onPause() {
-        btnPause.visibility = View.GONE
-        btnPlay.visibility = View.VISIBLE
+        view.showPlayButton()
         playerInteractor.pauseAudio()
     }
 }

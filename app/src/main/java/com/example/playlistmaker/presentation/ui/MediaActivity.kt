@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Button
@@ -18,12 +19,13 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.MediaPresenter
+import com.example.playlistmaker.presentation.MediaView
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-class MediaActivity : AppCompatActivity(), MediaContract {
+class MediaActivity : AppCompatActivity(), MediaContract, MediaView {
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -40,6 +42,7 @@ class MediaActivity : AppCompatActivity(), MediaContract {
     private lateinit var playButton: ImageView
     private lateinit var pauseButton: ImageView
     private lateinit var binding: ActivityMediaBinding
+    private lateinit var presenter: MediaContract.Presenter
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
         override fun run() {
@@ -53,6 +56,21 @@ class MediaActivity : AppCompatActivity(), MediaContract {
         }
     }
 
+    override fun showPlayButton() {
+        playButton.visibility = View.VISIBLE
+        pauseButton.visibility = View.GONE
+    }
+
+    override fun showPauseButton() {
+        playButton.visibility = View.INVISIBLE
+        pauseButton.visibility = View.VISIBLE
+    }
+
+    override fun updateProgressTime(time: String) {
+        trackLength.text = time
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
@@ -64,7 +82,11 @@ class MediaActivity : AppCompatActivity(), MediaContract {
         backImage.setOnClickListener {
             finish()
         }
-
+        presenter= MediaPresenter(
+            this,
+            intent.getStringExtra(SearchActivity.EXTRA_PREVIEW),
+            Creator.createInteractor(intent.getStringExtra(SearchActivity.EXTRA_PREVIEW))
+        )
 
         val trackName = findViewById<TextView>(R.id.track_name)
         val trackArtist = findViewById<TextView>(R.id.track_artist)
@@ -86,7 +108,7 @@ class MediaActivity : AppCompatActivity(), MediaContract {
         trackName.text = intent.getStringExtra(SearchActivity.EXTRA_TRACK_NAME)
         trackArtist.text = intent.getStringExtra(SearchActivity.EXTRA_ARTIST_NAME)
 
-        val millis = intent.getLongExtra(SearchActivity.EXTRA_TRACK_TIME, 0L)
+        val millis = intent.getIntExtra(SearchActivity.EXTRA_TRACK_TIME, 0).toLong()
         val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
         val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes)
         trackDuration.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
@@ -114,13 +136,7 @@ class MediaActivity : AppCompatActivity(), MediaContract {
         trackCountry.text = intent.getStringExtra(SearchActivity.EXTRA_COUNTRY)
         trackYear.text = formattedDate
 
-        val presenter: MediaContract.Presenter = MediaPresenter(
-            binding.playButton,
-            binding.pauseButton,
-            binding.trackLength,
-            intent.getStringExtra(SearchActivity.EXTRA_PREVIEW),
-            Creator.createInteractor(intent.getStringExtra(SearchActivity.EXTRA_PREVIEW))
-        )
+
 
         binding.backButton.setOnClickListener { finish() }
         binding.playButton.setOnClickListener { presenter.onPlayClicked() }
@@ -128,6 +144,14 @@ class MediaActivity : AppCompatActivity(), MediaContract {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        presenter.onPause()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onPause()
+    }
 
 }
