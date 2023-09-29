@@ -5,7 +5,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SearchActivity">
+    tools:context=".presentation.ui.SearchActivity">
 
     <ImageView
         android:id="@+id/backButton"
