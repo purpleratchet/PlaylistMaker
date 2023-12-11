@@ -1,94 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".presentation.ui.SettingsActivity">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/settings"
-        android:src="@drawable/ic_backbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:iconTint="?attr/colorSecondary"/>
+    <Button
+        android:id="@+id/btnSettingsBack"
+        style="@style/SettingsBackBtnStyle"
+        android:background="@null"
+        android:outlineProvider="none" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="14dp"
-        android:text="@string/settings"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="@dimen/activity_text_size_big"
-        app:icon="@drawable/ic_backbutton"
-        app:iconTint="?attr/colorSecondary"
-        app:layout_constraintStart_toEndOf="@+id/backButton"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/btn_darkMode"
+        style="@style/SettingsLayoutStyle"
+        android:layout_marginTop="24dp">
 
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/textSettings"
-        android:layout_marginTop="61dp"
-        android:text="@string/dark_theme"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            style="@style/SettingsTextStyle"
+            android:text="@string/darkTheme" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switcher"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginEnd="@dimen/activity_margin_end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitcher"
+            style="@style/SettingsImageStyle" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        style="@style/textSettings"
-        android:text="@string/share"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="parent"/>
+    <LinearLayout
 
+        style="@style/SettingsLayoutStyle"
+        android:onClick="onShareClick">
 
-    <ImageView
-        style="@style/imageSettings"
-        android:contentDescription="@string/share"
-        android:src="@drawable/ic_share"
-        app:layout_constraintTop_toTopOf="@id/textView3"
-        app:layout_constraintRight_toRightOf="parent"/>
+        <TextView
+            style="@style/SettingsTextStyle"
+            android:text="@string/shareApp" />
 
-    <TextView
-        android:id="@+id/textView4"
-        style="@style/textSettings"
-        android:text="@string/support"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="parent"/>
+        <ImageView
+            style="@style/SettingsImageStyle"
+            android:src="@drawable/ic_share_app" />
+    </LinearLayout>
 
-    <ImageView
-        style="@style/imageSettings"
-        android:contentDescription="@string/support"
-        android:src="@drawable/ic_support"
-        app:layout_constraintTop_toTopOf="@id/textView4"
-        app:layout_constraintRight_toRightOf="parent"/>
+    <LinearLayout
+        style="@style/SettingsLayoutStyle"
+        android:onClick="onSupportClick">
 
-    <TextView
-        android:id="@+id/textView5"
-        style="@style/textSettings"
-        android:text="@string/privacy"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            style="@style/SettingsTextStyle"
+            android:text="@string/contactSupport" />
 
-    <ImageView
-        style="@style/imageSettings"
-        android:contentDescription="@string/privacy"
-        android:src="@drawable/ic_arrow"
-        app:layout_constraintTop_toTopOf="@id/textView5"
-        app:layout_constraintRight_toRightOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            style="@style/SettingsImageStyle"
+            android:src="@drawable/ic_contact_support" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SettingsLayoutStyle"
+        android:onClick="onAgreementClick">
+
+        <TextView
+            style="@style/SettingsTextStyle"
+            android:text="@string/termsOfUse" />
+
+        <ImageView
+            style="@style/SettingsImageStyle"
+            android:src="@drawable/ic_terms_of_use" />
+    </LinearLayout>
+
+</LinearLayout>
+

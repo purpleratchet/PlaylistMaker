@@ -1,21 +1,20 @@
 <resources>
-    <string name="app_name">Playlist Maker</string>
-    <string name="title_hello">Привет, Практикум</string>
+    <string name="titleMain" translatable="false">Playlist maker</string>
     <string name="search">Поиск</string>
-    <string name="mediateka">Медиатека</string>
+    <string name="library">Медиатека</string>
     <string name="settings">Настройки</string>
-    <string name="dark_theme">Темная тема</string>
-    <string name="share">Поделиться приложением</string>
-    <string name="support">Написать в поддержку</string>
-    <string name="privacy">Пользовательское соглашение</string>
-    <string name="input_hint">Поиск</string>
-    <string name="linkCourse">https://practicum.yandex.ru/android-developer/</string>
-    <string name="emailSubject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
-    <string name="emailText">Спасибо разработчикам и разработчицам за крутое приложение!</string>
-    <string name="linkLegacy">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="mailAddress">danparkin@yandex.ru</string>
-    <string name="mailto">mailto:</string>
-    <string name="error_not_found">Ничего не нашлось</string>
-    <string name="error404">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
-    <string name="clear">Обновить</string>
+    <string name="darkTheme">Тёмная тема</string>
+    <string name="shareApp">Поделиться приложением</string>
+    <string name="contactSupport">Написать в поддержку</string>
+    <string name="termsOfUse">Пользовательское соглашение</string>
+    <string name="shareUrl">https://practicum.yandex.ru/android-developer/</string>
+    <string name="agreementUrl">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="sendTitle">Отправить письмо</string>
+    <string name="sendToEmail">vitalikz85@yandex.ru</string>
+    <string name="sendHeader">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="sendText">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="noInternet">Проблемы со связью\n\nЗагрузка не удалась.Проверьте \n подключение к интернету"</string>
+    <string name="NoResults">Ничего не нашлось</string>
+    <string name="default_playtime_value">00:00</string>
+    <string name="mail_app_not_found">У Вас не установлен ни один почтовый клиент!</string>
 </resources>

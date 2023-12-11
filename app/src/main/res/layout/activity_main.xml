@@ -1,48 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:background="?attr/colorPrimary"
-    tools:context=".presentation.ui.MainActivity">
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:padding="16dp"
-        android:textSize="@dimen/activity_text_size_big"
-        android:textColor="@color/white"
-        android:fontFamily="@font/ys_display_medium"/>
+        android:id="@+id/title"
+        style="@style/MainTitleText" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="17dp"
-        android:layout_marginEnd="15dp"
-        android:orientation="vertical"
-        >
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSearch"
+        style="@style/MainButtonStyle"
+        android:layout_marginTop="16dp"
+        android:text="@string/search"
+        app:icon="@drawable/ic_search_night" />
 
-        <Button
-            android:id="@+id/search"
-            style="@style/buttonMain"
-            android:text="@string/search"
-            app:icon="@drawable/ic_search" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLibrary"
+        style="@style/MainButtonStyle"
+        android:text="@string/library"
+        app:icon="@drawable/ic_library" />
 
-        <Button
-            android:id="@+id/mediateka"
-            style="@style/buttonMain"
-            android:text="@string/mediateka"
-            app:icon="@drawable/ic_mediateka"
-            />
-        <Button
-            android:id="@+id/settings"
-            style="@style/buttonMain"
-            android:text="@string/settings"
-            app:icon="@drawable/ic_settings"
-            />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSettings"
+        style="@style/MainButtonStyle"
+        android:layout_marginBottom="16dp"
+        android:text="@string/settings"
+        app:icon="@drawable/ic_settings" />
 
-    </LinearLayout>
 </LinearLayout>
