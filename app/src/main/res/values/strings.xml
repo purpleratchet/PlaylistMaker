@@ -17,4 +17,5 @@
     <string name="NoResults">Ничего не нашлось</string>
     <string name="default_playtime_value">00:00</string>
     <string name="mail_app_not_found">У Вас не установлен ни один почтовый клиент!</string>
+    <string name="app_name">Playlist Maker</string>
 </resources>
