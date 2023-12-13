@@ -18,7 +18,7 @@ class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        setContentView(binding.root)
 
         val track = getTrack()
         bind(track)
@@ -35,13 +35,11 @@ class PlayerActivity : AppCompatActivity() {
             viewModel.observeTimer().observe(this) {
                 updateTimer(it)
             }
-        }
-
-        binding.btnPlay.setOnClickListener {
-            if (::viewModel.isInitialized && viewModel.isClickAllowed()) {
-                viewModel.playbackControl()
+            viewModel.observeClickAllowed().observe(this) {
+                clickAllowed(it)
             }
         }
+
 
         binding.btnPlayerBack.setOnClickListener {
             finish()
@@ -55,14 +53,14 @@ class PlayerActivity : AppCompatActivity() {
     private fun bind(track: TrackPlayerModel?) {
         track?.let {
             val radius = resources.getDimensionPixelSize(R.dimen.cover_radius).toFloat()
-            binding?.let {
+            binding.let {
                 Glide.with(this)
                     .load(track.getCoverArtwork())
                     .placeholder(R.drawable.placeholder)
                     .transform(RoundedCorners(radius.roundToInt()))
                     .into(it.trackCover)
             }
-            binding?.apply {
+            binding.apply {
                 trackNameResult.text = it.trackName
                 artistNameResult.text = it.artistName
                 trackTimeResult.text = it.formatTrackDuration()
@@ -96,6 +94,12 @@ class PlayerActivity : AppCompatActivity() {
 
             else -> {}
         }
+    }
+
+    private fun clickAllowed(isAllowed: Boolean) {
+        binding.btnPlay.isEnabled = isAllowed
+        binding.btnPause.isEnabled = isAllowed
+        viewModel.playbackControl()
     }
 
     override fun onPause() {

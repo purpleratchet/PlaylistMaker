@@ -190,6 +190,8 @@ class SearchActivity : AppCompatActivity() {
                     rvSearchResult.visibility = View.VISIBLE
                     noInternet.visibility = View.GONE
                     noResults.visibility = View.GONE
+                    refresh.visibility = View.GONE
+
                     searchAdapter.notifyDataSetChanged()
                 }
 
@@ -227,6 +229,8 @@ class SearchActivity : AppCompatActivity() {
 
                 is ScreenState.ContentHistoryList -> {
                     rvHistory.visibility = View.VISIBLE
+                    clearHistoryButton.visibility = View.VISIBLE
+                    historyMessage.visibility = View.VISIBLE
                     tracksHistory.clear()
                     tracksHistory.addAll(state.historyList)
                     historyAdapter.notifyDataSetChanged()

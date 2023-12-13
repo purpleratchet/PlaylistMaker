@@ -2,6 +2,7 @@ package com.example.playlistmaker.player.ui
 
 import android.os.Handler
 import android.os.Looper
+import androidx.core.os.postDelayed
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,12 +21,13 @@ class PlayerViewModel(
 ) : ViewModel() {
 
     private val handler = Handler(Looper.getMainLooper())
-    private var clickAllowed = true
 
     private val stateLiveData = MutableLiveData<PlayerState>()
     private val timerLiveData = MutableLiveData<String>()
+    private val clickAllowedLiveData = MutableLiveData<Boolean>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
     fun observeTimer(): LiveData<String> = timerLiveData
+    fun observeClickAllowed(): LiveData<Boolean> = clickAllowedLiveData
 
     init {
         renderState(PlayerState.Default)
@@ -100,13 +102,17 @@ class PlayerViewModel(
         }
     }
 
-    fun isClickAllowed(): Boolean {
-        val current = clickAllowed
-        if (clickAllowed) {
-            clickAllowed = false
-            handler.postDelayed({ clickAllowed = true }, CLICK_DEBOUNCE_DELAY_MS)
+    private fun isClickAllowed() {
+        val current = clickAllowedLiveData.value
+        if (current == true) {
+            // Обновите LiveData
+            clickAllowedLiveData.value = false
+            handler.postDelayed({ clickAllowedLiveData.postValue(false) }, CLICK_DEBOUNCE_DELAY_MS)
+        } else {
+            // Обновите LiveData
+            clickAllowedLiveData.value = true
+            handler.postDelayed({ clickAllowedLiveData.postValue(true) }, CLICK_DEBOUNCE_DELAY_MS)
         }
-        return current
     }
 
     companion object {

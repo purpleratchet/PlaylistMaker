@@ -1,10 +1,13 @@
 package com.example.playlistmaker.settings.ui
 
+import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
@@ -18,11 +21,23 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         switch = findViewById(R.id.themeSwitcher)
+        if (switch.isChecked) switch.thumbTintList =
+            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue))
+
+        if (getSharedPreferences("settings", MODE_PRIVATE).getBoolean("darkTheme", false)) {
+            switch.isChecked = true
+            switch.thumbTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue))
+        } else {
+            switch.isChecked = false
+            switch.thumbTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+        }
 
         val viewModelFactory =
             Creator.createSettingsViewModelFactory(this)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(SettingsViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[SettingsViewModel::class.java]
 
         viewModel.getDarkThemeLiveData().observe(this) { isDarkTheme ->
             switch.isChecked = isDarkTheme
@@ -33,10 +48,6 @@ class SettingsActivity : AppCompatActivity() {
             viewModel.setDarkTheme(isChecked)
             viewModel.setAppTheme()
         }
-
-        val savedDarkTheme =
-            viewModel.getDarkTheme()
-        switch.isChecked = savedDarkTheme
 
         val backButton = findViewById<Button>(R.id.btnSettingsBack)
         backButton.setOnClickListener { finish() }

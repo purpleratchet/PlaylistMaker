@@ -11,7 +11,6 @@ class SettingsViewModel(
     private val sharingInteractor: SharingInteractor
 ) : ViewModel() {
     private val darkThemeLiveData: MutableLiveData<Boolean> = MutableLiveData()
-
     fun getDarkThemeLiveData(): LiveData<Boolean> {
         return darkThemeLiveData
     }
@@ -21,8 +20,8 @@ class SettingsViewModel(
         darkThemeLiveData.postValue(isDarkTheme)
     }
 
-    fun getDarkTheme(): Boolean {
-        return settingsInteractor.getDarkTheme()
+    fun getDarkTheme() {
+        darkThemeLiveData.value = settingsInteractor.getDarkTheme()
     }
 
     fun shareApp() {

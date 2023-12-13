@@ -17,10 +17,12 @@
 
         <TextView
             style="@style/SettingsTextStyle"
-            android:text="@string/darkTheme" />
+            android:text="@string/darkTheme"
+            />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/themeSwitcher"
+            android:layout_height="18dp"
             style="@style/SettingsImageStyle" />
     </LinearLayout>
 

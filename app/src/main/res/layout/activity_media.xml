@@ -44,6 +44,7 @@
         android:layout_height="26dp"
         android:fontFamily="@font/ys_display_medium"
         android:textSize="19sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/artistNameResult"
         app:layout_constraintEnd_toEndOf="@+id/track_cover"
         app:layout_constraintStart_toStartOf="@+id/track_cover"
@@ -52,6 +53,7 @@
     <TextView
         android:id="@+id/artistNameResult"
         android:layout_width="0dp"
+        android:textColor="@color/black"
         android:layout_height="16dp"
         android:fontFamily="@font/ys_display_medium"
         android:textSize="14sp"
@@ -107,7 +109,6 @@
     <TextView
         android:id="@+id/trackTime_field"
         style="@style/playerTrackInfo"
-        android:layout_marginTop="20dp"
         android:text="Длительность"
         app:layout_constraintBottom_toTopOf="@+id/collectionName_field"
         app:layout_constraintTop_toBottomOf="@+id/progressTime"
@@ -117,7 +118,6 @@
     <TextView
         android:id="@+id/trackTimeResult"
         style="@style/playerTrackResult"
-        android:layout_marginTop="20dp"
         android:layout_toEndOf="@id/trackTime_field"
         app:layout_constraintBottom_toTopOf="@+id/collectionName_field"
         app:layout_constraintTop_toBottomOf="@+id/progressTime" />
