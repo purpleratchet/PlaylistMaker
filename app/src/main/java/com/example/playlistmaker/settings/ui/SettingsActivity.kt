@@ -24,15 +24,15 @@ class SettingsActivity : AppCompatActivity() {
         if (switch.isChecked) switch.thumbTintList =
             ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue))
 
-        if (getSharedPreferences("settings", MODE_PRIVATE).getBoolean("darkTheme", false)) {
-            switch.isChecked = true
-            switch.thumbTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue))
-        } else {
-            switch.isChecked = false
-            switch.thumbTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
-        }
+//        if (getSharedPreferences("settings", MODE_PRIVATE).getBoolean("darkTheme", false)) {
+//            switch.isChecked = true
+//            switch.thumbTintList =
+//                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue))
+//        } else {
+//            switch.isChecked = false
+//            switch.thumbTintList =
+//                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+//        }
 
         val viewModelFactory =
             Creator.createSettingsViewModelFactory(this)
@@ -41,6 +41,10 @@ class SettingsActivity : AppCompatActivity() {
 
         viewModel.getDarkThemeLiveData().observe(this) { isDarkTheme ->
             switch.isChecked = isDarkTheme
+            if (isDarkTheme) switch.thumbTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue))
+            else switch.thumbTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             viewModel.setAppTheme()
         }
 

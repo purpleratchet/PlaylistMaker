@@ -40,6 +40,9 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
+        binding.btnPlay.setOnClickListener {
+            viewModel.playbackControl()
+        }
 
         binding.btnPlayerBack.setOnClickListener {
             finish()
@@ -92,15 +95,19 @@ class PlayerActivity : AppCompatActivity() {
                 binding.progressTime.setText(R.string.default_playtime_value)
             }
 
+            is PlayerState.Default -> {
+                binding.btnPlay.setImageResource(R.drawable.ic_play)
+                binding.progressTime.setText(R.string.default_playtime_value)
+            }
+
             else -> {}
         }
     }
 
     private fun clickAllowed(isAllowed: Boolean) {
         binding.btnPlay.isEnabled = isAllowed
-        binding.btnPause.isEnabled = isAllowed
-        viewModel.playbackControl()
     }
+
 
     override fun onPause() {
         super.onPause()

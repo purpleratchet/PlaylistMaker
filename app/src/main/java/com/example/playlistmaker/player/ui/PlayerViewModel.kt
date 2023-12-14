@@ -59,6 +59,7 @@ class PlayerViewModel(
     private fun setOnCompleteListener() {
         playerInteractor.setOnCompletionListener {
             renderState(PlayerState.Prepared)
+            timerLiveData.postValue("00:00")
         }
     }
 
@@ -104,13 +105,8 @@ class PlayerViewModel(
 
     private fun isClickAllowed() {
         val current = clickAllowedLiveData.value
-        if (current == true) {
-            // Обновите LiveData
-            clickAllowedLiveData.value = false
-            handler.postDelayed({ clickAllowedLiveData.postValue(false) }, CLICK_DEBOUNCE_DELAY_MS)
-        } else {
-            // Обновите LiveData
-            clickAllowedLiveData.value = true
+        if (current == null || current) {
+            clickAllowedLiveData.postValue(false)
             handler.postDelayed({ clickAllowedLiveData.postValue(true) }, CLICK_DEBOUNCE_DELAY_MS)
         }
     }
@@ -125,5 +121,4 @@ class PlayerViewModel(
             }
         }
     }
-
 }
