@@ -1,11 +1,16 @@
 
-
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftBorder"
@@ -38,14 +43,14 @@
         style="@style/playerCoverTrack"
         android:src="@drawable/placeholder"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="56dp" />
+        />
 
     <TextView
         android:id="@+id/trackNameResult"
         android:layout_width="0dp"
         android:layout_height="26dp"
         android:fontFamily="@font/ys_display_medium"
+        android:layout_marginTop="24dp"
         android:textSize="19sp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/artistNameResult"
@@ -57,6 +62,7 @@
         android:id="@+id/artistNameResult"
         android:layout_width="0dp"
         android:textColor="@color/black"
+        android:layout_marginTop="12dp"
         android:layout_height="16dp"
         android:fontFamily="@font/ys_display_medium"
         android:textSize="14sp"
@@ -74,13 +80,13 @@
     <ImageButton
         android:id="@+id/btnPlay"
         style="@style/playButton"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="30dp"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/btnPause"
         style="@style/pauseButton"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="30dp"
         android:visibility="gone"
         tools:ignore="MissingConstraints" />
 
@@ -88,15 +94,12 @@
         android:id="@+id/btnFavorite"
         style="@style/favoriteButton"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="302dp"
-        tools:layout_editor_absoluteY="484dp" />
+        />
 
     <ImageButton
         android:id="@+id/btnDisLike"
         style="@style/disLikeButton"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="302dp"
-        tools:layout_editor_absoluteY="484dp"
         android:visibility="gone"/>
 
     <TextView
@@ -112,6 +115,7 @@
     <TextView
         android:id="@+id/trackTime_field"
         style="@style/playerTrackInfo"
+        android:layout_marginTop="39dp"
         android:text="Длительность"
         app:layout_constraintBottom_toTopOf="@+id/collectionName_field"
         app:layout_constraintTop_toBottomOf="@+id/progressTime"
@@ -119,6 +123,7 @@
 
     <TextView
         android:id="@+id/trackTimeResult"
+        android:layout_marginTop="23dp"
         style="@style/playerTrackResult"
         android:layout_toEndOf="@id/trackTime_field"
         app:layout_constraintBottom_toTopOf="@+id/collectionName_field"
@@ -128,12 +133,14 @@
         android:id="@+id/collectionName_field"
         style="@style/playerTrackInfo"
         android:text="Альбом"
+        android:layout_marginTop="17dp"
         app:layout_constraintBottom_toTopOf="@+id/releaseDate_field"
         app:layout_constraintTop_toBottomOf="@+id/trackTime_field"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/collection_Name"
+        android:layout_marginTop="1dp"
         style="@style/playerTrackResult"
         android:layout_toEndOf="@id/collectionName_field"
         app:layout_constraintBottom_toTopOf="@+id/releaseDate_field"
@@ -143,6 +150,7 @@
         android:id="@+id/releaseDate_field"
         style="@style/playerTrackInfo"
         android:text="Год"
+        android:layout_marginTop="17dp"
         app:layout_constraintBottom_toTopOf="@+id/primaryGenreName_field"
         app:layout_constraintTop_toBottomOf="@+id/collectionName_field"
         tools:ignore="MissingConstraints" />
@@ -150,6 +158,7 @@
     <TextView
         android:id="@+id/release_Date"
         style="@style/playerTrackResult"
+        android:layout_marginTop="1dp"
         android:layout_toEndOf="@id/releaseDate_field"
         app:layout_constraintBottom_toTopOf="@+id/primaryGenreName_field"
         app:layout_constraintTop_toBottomOf="@+id/collectionName_field" />
@@ -157,6 +166,7 @@
     <TextView
         android:id="@+id/primaryGenreName_field"
         style="@style/playerTrackInfo"
+        android:layout_marginTop="17dp"
         android:text="Жанр"
         app:layout_constraintBottom_toTopOf="@+id/country_field"
         app:layout_constraintTop_toBottomOf="@+id/releaseDate_field"
@@ -164,14 +174,17 @@
 
     <TextView
         android:id="@+id/primary_GenreName"
+
+        android:layout_marginBottom="17dp"
         style="@style/playerTrackResult"
         android:layout_toEndOf="@id/primaryGenreName_field"
         app:layout_constraintBottom_toTopOf="@+id/country_field"
-        app:layout_constraintTop_toBottomOf="@+id/releaseDate_field" />
+        app:layout_constraintTop_toTopOf="@+id/primaryGenreName_field" />
 
     <TextView
         android:id="@+id/country_field"
         style="@style/playerTrackInfo"
+        android:layout_marginTop="17dp"
         android:text="Страна"
         app:layout_constraintBottom_toBottomOf="@+id/downBorder"
         app:layout_constraintTop_toBottomOf="@+id/primaryGenreName_field"
@@ -179,9 +192,11 @@
 
     <TextView
         android:id="@+id/country"
+        android:layout_marginTop="17dp"
         style="@style/playerTrackResult"
         android:layout_toEndOf="@id/country_field"
         app:layout_constraintBottom_toBottomOf="@+id/downBorder"
         app:layout_constraintTop_toBottomOf="@+id/primaryGenreName_field" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
