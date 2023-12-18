@@ -69,7 +69,12 @@ class PlayerViewModel(
                 pauseAudioPlayer()
             }
 
-            is PlayerState.Prepared, PlayerState.Paused -> {
+            is PlayerState.Paused -> {
+                startAudioPlayer()
+                handler.post(updateTime())
+            }
+
+            is PlayerState.Prepared -> {
                 startAudioPlayer()
                 handler.post(updateTime())
             }
@@ -91,13 +96,18 @@ class PlayerViewModel(
         handler.removeCallbacksAndMessages(updateTime())
     }
 
+
     private fun updateTime(): Runnable {
         return object : Runnable {
             override fun run() {
-                timerLiveData.postValue(
-                    SimpleDateFormat("mm:ss", Locale.getDefault())
-                        .format(getCurrentPosition())
-                )
+                if (stateLiveData.value is PlayerState.Playing || stateLiveData.value is PlayerState.Paused) {
+                    val time = getCurrentPosition()
+                    val timeFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
+                    val formattedTime = timeFormat.format(time)
+                    timerLiveData.postValue(formattedTime)
+                } else {
+                    timerLiveData.postValue("00:00")
+                }
                 handler.postDelayed(this, PLAYBACK_UPDATE_DELAY_MS)
             }
         }

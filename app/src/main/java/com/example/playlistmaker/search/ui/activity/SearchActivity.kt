@@ -191,7 +191,9 @@ class SearchActivity : AppCompatActivity() {
                     noInternet.visibility = View.GONE
                     noResults.visibility = View.GONE
                     refresh.visibility = View.GONE
-
+                    rvHistory.visibility = View.GONE
+                    historyMessage.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
                     searchAdapter.notifyDataSetChanged()
                 }
 
@@ -222,6 +224,8 @@ class SearchActivity : AppCompatActivity() {
                     noResults.visibility = View.GONE
                     rvHistory.visibility = View.GONE
                     rvSearchResult.visibility = View.GONE
+                    historyMessage.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
                     progressSearch.visibility = View.VISIBLE
                     progressBar.visibility = View.VISIBLE
                     hideKeyboard()

@@ -8,4 +8,5 @@ sealed interface PlayerState {
     ) : PlayerState
 
     object Paused : PlayerState
+    object Completed : PlayerState
 }
