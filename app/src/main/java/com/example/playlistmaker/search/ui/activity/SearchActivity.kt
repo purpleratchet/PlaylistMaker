@@ -22,6 +22,7 @@ import com.example.playlistmaker.search.domain.model.TrackSearchModel
 import com.example.playlistmaker.search.ui.TracksAdapter
 import com.example.playlistmaker.search.ui.model.ScreenState
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -33,17 +34,13 @@ class SearchActivity : AppCompatActivity() {
     private var userInput = ""
     private var clickAllowed = true
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater).also {
             setContentView(it.root)
         }
-
-        viewModel = ViewModelProvider(
-            this, SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
 
         viewModel.stateLiveData().observe(this) {
             updateScreen(it)

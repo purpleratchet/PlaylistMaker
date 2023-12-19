@@ -2,32 +2,30 @@ package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
 import com.example.playlistmaker.player.domain.TrackPlayerModel
 import com.example.playlistmaker.player.domain.api.PlayerState
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import kotlin.math.roundToInt
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMediaBinding
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(getTrack()!!.previewUrl)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val track = getTrack()
         bind(track)
 
-        if (track != null) {
-            viewModel = ViewModelProvider(
-                this, PlayerViewModel.getViewModelFactory(track.previewUrl)
-            )[PlayerViewModel::class.java]
-
+        if (getTrack() != null) {
             viewModel.observeState().observe(this) {
                 updateScreen(it)
             }
@@ -39,7 +37,6 @@ class PlayerActivity : AppCompatActivity() {
                 clickAllowed(it)
             }
         }
-
         binding.btnPlay.setOnClickListener {
             viewModel.playbackControl()
         }
@@ -52,29 +49,29 @@ class PlayerActivity : AppCompatActivity() {
     private fun getTrack(): TrackPlayerModel? {
         return intent.getSerializableExtra(EXTRA_TRACK) as? TrackPlayerModel
     }
-
     private fun bind(track: TrackPlayerModel?) {
+        val radius = resources.getDimensionPixelSize(R.dimen.cover_radius).toFloat()
         track?.let {
-            val radius = resources.getDimensionPixelSize(R.dimen.cover_radius).toFloat()
-            binding.let {
-                Glide.with(this)
-                    .load(track.getCoverArtwork())
-                    .placeholder(R.drawable.placeholder)
-                    .transform(RoundedCorners(radius.roundToInt()))
-                    .into(it.trackCover)
-            }
-            binding.apply {
-                trackNameResult.text = it.trackName
-                artistNameResult.text = it.artistName
-                trackTimeResult.text = it.formatTrackDuration()
-                progressTime.text = it.formatTrackDuration()
-                collectionName.text = it.collectionName
-                releaseDate.text = it.formatReleaseDate()
-                primaryGenreName.text = it.primaryGenreName
-                country.text = it.country
-            }
+        binding.let {
+            Glide.with(this)
+                .load(track.getCoverArtwork())
+                .placeholder(R.drawable.placeholder)
+                .transform(RoundedCorners(radius.roundToInt()))
+                .into(it.trackCover)
+        }
+        binding.apply {
+            trackNameResult.text = it.trackName
+            artistNameResult.text = it.artistName
+            trackTimeResult.text = it.formatTrackDuration()
+            progressTime.text = it.formatTrackDuration()
+            collectionName.text = it.collectionName
+            releaseDate.text = it.formatReleaseDate()
+            primaryGenreName.text = it.primaryGenreName
+            country.text = it.country
+        }
         }
     }
+
 
     private fun updateTimer(time: String) {
         binding.progressTime.text = time
