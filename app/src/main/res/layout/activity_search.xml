@@ -1,183 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.ui.SearchActivity">
+    tools:ignore="ExtraText">
 
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/search"
-        android:src="@drawable/ic_backbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:iconTint="?attr/colorSecondary"/>
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="14dp"
-        android:text="@string/search"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="@dimen/activity_text_size_big"
-        app:icon="@drawable/ic_backbutton"
-        app:iconTint="?attr/colorSecondary"
-        app:layout_constraintStart_toEndOf="@+id/backButton"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/ys_display_medium"/>
-    <EditText
-        android:id="@+id/inputEditText"
-        style="@style/editTextStyle"
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:hint="@string/input_hint"
-        android:autofillHints="name"
-        android:maxLength="15"
-        android:maxLines="1"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:inputType="text"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:layout_marginStart="@dimen/activity_margin_start"
-        android:layout_marginEnd="@dimen/activity_margin_end"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_edittext"
-        android:drawableStart="@drawable/ic_search_small"
-        android:paddingStart="9dp"
-        android:paddingEnd="9dp"
-        android:drawablePadding="9dp"/>
-    <ImageView
-        android:id="@+id/clear_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/inputEditText"
-        android:src="@drawable/ic_clear"
-        android:visibility="gone"
-        android:contentDescription="@string/search"
-        app:layout_constraintRight_toRightOf="@id/inputEditText"
-        app:layout_constraintTop_toTopOf="@id/inputEditText"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="12dp"/>
+    <Button
+        android:id="@+id/btnSearchBack"
+        style="@style/SettingsBackBtnStyle"
+        android:text="@string/search" />
 
-    <LinearLayout
-        android:id="@+id/linear"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/inputEditText"
-        android:orientation="vertical">
+        android:layout_marginLeft="@dimen/marginLeft"
+        android:layout_marginRight="@dimen/marginRight">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            style="@style/searchEditTextStyle"
+            android:hint="@string/search"
+            android:imeOptions="actionDone" />
+
+        <ImageView
+            style="@style/searchIconStyle"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="13dp" />
+
+        <ImageView
+            android:id="@+id/clearImageView"
+            style="@style/clearIconStyle"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="13dp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/noInternet"
+        style="@style/error_frameLayout"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageViewNoInternet"
+            style="@style/error_image"
+            android:src="@drawable/ic_no_internet" />
+
         <TextView
-            android:id="@+id/searched"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            app:layout_constraintTop_toBottomOf="@+id/inputEditText"
-            android:layout_marginTop="24dp"
-            android:paddingTop="18dp"
-            android:textSize="19sp"
-            android:text="Вы искали"
-            android:textAlignment="center"
-            android:visibility="gone"
-            android:fontFamily="@font/ys_display_medium"
-            android:textColor="?attr/colorButtonNormal"/>
-<!--        android:visibility="gone"-->
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/track"
-            android:visibility="gone"/>
+            android:id="@+id/textViewNoInternet"
+            style="@style/error_text"
+            android:text="@string/noInternet" />
 
         <Button
-            android:id="@+id/clear_history"
+            android:id="@+id/refresh"
+            style="@style/RefreshBtnStyle"
+            app:backgroundTint="@color/main_black" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/noResults"
+        style="@style/error_frameLayout"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageViewNoResults"
+            style="@style/error_image"
+            android:src="@drawable/ic_no_results" />
+
+        <TextView
+            android:id="@+id/textViewNoResults"
+            style="@style/error_text"
+            android:text="@string/NoResults" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/progressSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/recycler"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Очистить историю"
-            android:textAllCaps="false"
-            android:fontFamily="@font/ys_display_medium"
-            style="@style/buttonClear"
-            android:textColor="?attr/colorOnPrimary"
-            android:backgroundTint="?attr/colorButtonNormal"
-            android:letterSpacing="0"
             android:layout_gravity="center"
-            android:visibility="gone"
-            />
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/ic_progress_animation"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/history_message"
+            style="@style/history_message_Style"
+            android:layout_marginTop="0dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchResult"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/layout_track" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/layout_track" />
+
+        <Button
+            android:id="@+id/clearHistoryButton"
+            style="@style/ClearBtnStyle"
+            app:backgroundTint="@color/main_black" />
+
+
     </LinearLayout>
-<!--        android:visibility="gone"-->
-        <!--        android:layout_gravity="center"-->
 
-
-
-
-    <ImageView
-        android:id="@+id/zaglushka_pustoi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/zaglushka_pustoi"
-        app:layout_constraintTop_toBottomOf="@+id/inputEditText"
-        android:layout_marginTop="110dp"
-        android:visibility="gone"
-        />
-    <TextView
-        android:id="@+id/zaglushka_pustoi_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/error_not_found"
-        app:layout_constraintTop_toBottomOf="@+id/zaglushka_pustoi"
-        android:gravity="center"
-        android:fontFamily="@font/ys_display_medium"
-        android:textSize="19sp"
-        android:paddingTop="16dp"
-        android:visibility="gone"
-        android:textColor="?attr/colorButtonNormal"
-        />
-    <Button
-        android:id="@+id/zaglushka_inet_button"
-        style="@style/buttonClear"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/zaglushka_pustoi_text"
-        android:backgroundTint="?attr/colorButtonNormal"
-        android:text="@string/clear"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:fontFamily="@font/ys_display_medium"
-        android:textAllCaps="false"
-        android:letterSpacing="0"
-        android:textAlignment="center"
-        android:visibility="gone"
-        android:textColor="?attr/colorOnPrimary"
-        />
-
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:indeterminateTint="@color/yp_blue"
-        app:layout_constraintTop_toBottomOf="@id/inputEditText"
-        android:layout_marginTop="148dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

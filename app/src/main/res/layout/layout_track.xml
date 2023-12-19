@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/track_list"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/trackArtwork"
+        style="@style/trackArtwork"
+        android:src="@drawable/placeholder"
+        tools:ignore="ExtraText" />
+
+    <LinearLayout
+        android:id="@+id/track_info"
+        style="@style/trackInfo">
+
+        <TextView
+            android:id="@+id/trackName"
+            tools:text="Track Name"
+            style="@style/trackName"/>
+
+        <LinearLayout
+            style="@style/artist_time_layout">
+
+            <TextView
+                android:id="@+id/artistName"
+                tools:text="Artist Name"
+                style="@style/artist_time"/>
+
+            <ImageView
+                style="@style/dot_style"
+                android:src="@drawable/ic_dot" />
+
+            <TextView
+                android:id="@+id/trackTime"
+                tools:text="Track Time"
+                style="@style/artist_time"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        style="@style/right_arrow"
+        android:src="@drawable/ic_terms_of_use" />
+</LinearLayout>
