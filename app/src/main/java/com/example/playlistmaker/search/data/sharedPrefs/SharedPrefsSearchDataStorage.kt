@@ -3,6 +3,7 @@ package com.example.playlistmaker.search.data.sharedPrefs
 import android.app.Application
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.SearchDataStorage
 import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.utils.SEARCH_HISTORY_KEY
@@ -12,13 +13,10 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 @Suppress("UNCHECKED_CAST")
-class SharedPrefsSearchDataStorage(context: Context) : SearchDataStorage {
-
-    private val sharedPref = context.getSharedPreferences(
-        SHARED_PREFERENCES,
-        MODE_PRIVATE
-    )
-
+class SharedPrefsSearchDataStorage(
+    private val sharedPref: SharedPreferences,
+    private val gson: Gson
+) : SearchDataStorage {
     private val historyList = readFromSharedPref()
 
     override fun getSearchHistory() = historyList
@@ -40,7 +38,8 @@ class SharedPrefsSearchDataStorage(context: Context) : SearchDataStorage {
     }
 
     private fun updateSharedPref() {
-        sharedPref.edit().clear().putString(SEARCH_HISTORY_KEY, Gson().toJson(historyList)).apply()
+        sharedPref.edit().remove(SEARCH_HISTORY_KEY)
+            .putString(SEARCH_HISTORY_KEY, gson.toJson(historyList)).apply()
     }
 
     private fun readFromSharedPref(): ArrayList<TrackDto> {
