@@ -7,13 +7,15 @@
     android:orientation="vertical"
     android:paddingHorizontal="18dp"
     android:paddingTop="16dp"
-    android:theme="@style/Theme.PlaylistMaker">
+    android:theme="@style/Theme.PlaylistMaker"
+    android:background="@color/main_white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
-        android:paddingBottom="4dp">
+        android:paddingBottom="4dp"
+        android:background="@color/main_white">
 
         <ImageView
             android:id="@+id/btnBack"
@@ -22,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_margin="4dp"
             android:src="@drawable/ic_arrow_back"
-            app:tint="@color/black" />
+            app:tint="@color/main_black" />
 
         <TextView
             android:layout_width="match_parent"
@@ -30,7 +32,7 @@
             android:layout_marginStart="20dp"
             android:fontFamily="@font/ys_display_regular"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/main_black"
             android:padding="8dp"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -45,8 +47,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabTextAppearance="@style/TabLayoutStyle"
-        app:tabIndicatorColor="@color/black"
-        app:tabTextColor="@color/black" />
+        app:tabIndicatorColor="@color/main_black"
+        app:tabTextColor="@color/main_black"
+        app:tabSelectedTextColor="@color/white"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
