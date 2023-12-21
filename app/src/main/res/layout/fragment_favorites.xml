@@ -18,7 +18,6 @@
         <TextView
             android:id="@+id/tv_no_favorites"
             style="@style/LibraryTextStyle"
-            android:text="@string/no_favorites"
-            />
+            android:text="@string/no_favorites" />
     </LinearLayout>
 </FrameLayout>

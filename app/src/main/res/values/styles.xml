@@ -43,12 +43,18 @@
         <item name="android:background">@drawable/ic_no_results</item>
     </style>
 
-    <style name="TabLayoutStyle" parent="@android:style/TextAppearance.StatusBar.EventContent.Title">
-        <item name="tabIndicatorColor">@color/black</item>
-        <item name="tabTextColor">@color/black</item>
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/main_black</item>
+        <item name="tabTextColor">@color/main_black</item>
+        <item name="tabSelectedTextColor">@color/main_black</item>
+        <item name="tabTextAppearance">@style/TabLayoutTextStyle</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="trackName.Result">

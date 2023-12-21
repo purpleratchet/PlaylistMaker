@@ -44,13 +44,18 @@
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/white</item>
-        <item name="tabRippleColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/main_black</item>
+        <item name="tabRippleColor">@color/main_black</item>
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabTextColor">@color/white</item>
+        <item name="tabTextColor">@color/main_black</item>
+        <item name="tabSelectedTextColor">@color/main_black</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textColor">@color/main_black</item>
     </style>
 
     <style name="trackName.Result">
