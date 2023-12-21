@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.PlaylistMaker"
+    tools:context=".library.PlaylistFragment">
+
+    <LinearLayout
+        android:id="@+id/playlist_container"
+        style="@style/LibraryContainerStyle"
+        android:paddingTop="70dp">
+
+        <Button
+            android:id="@+id/btn_add_playlist"
+            style="@style/PlaylistBtnStyle"
+            android:text="@string/add_playlist" />
+
+        <ImageView
+            android:id="@+id/iv_no_playlist"
+            style="@style/LibraryImageStyle" />
+
+        <TextView
+            android:id="@+id/tv_no_playlist"
+            style="@style/LibraryTextStyle"
+            android:text="@string/no_playlists" />
+    </LinearLayout>
+</FrameLayout>
