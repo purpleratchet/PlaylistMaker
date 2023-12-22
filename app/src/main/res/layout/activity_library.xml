@@ -46,10 +46,11 @@
         android:id="@+id/libraryTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextAppearance="@style/TabLayoutStyle"
         app:tabIndicatorColor="@color/main_black"
         app:tabTextColor="@color/main_black"
-        app:tabSelectedTextColor="@color/white"/>
+        android:fontFamily="@font/ys_display_regular"
+        android:letterSpacing="0"
+        android:background="@color/main_white" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
