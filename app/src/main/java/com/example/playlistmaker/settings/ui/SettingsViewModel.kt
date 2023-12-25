@@ -21,8 +21,9 @@ class SettingsViewModel(
         darkThemeLiveData.postValue(isDarkTheme)
     }
 
-    fun getDarkTheme() {
+    fun getDarkTheme(): Boolean {
         darkThemeLiveData.value = settingsInteractor.getDarkTheme()
+        return darkThemeLiveData.value!!
     }
 
     fun shareApp() {

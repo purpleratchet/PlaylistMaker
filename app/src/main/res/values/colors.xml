@@ -12,6 +12,6 @@
     <color name="gray">#AEAFB4</color>
     <color name="gray2">#E6E8EB</color>
     <color name="main_black">#FF000000</color>
-    <color name="main_white">#E6E8EB</color>
+    <color name="main_white">#FFFFFFFF</color>
     <color name="text_gray">#AEAFB4</color>
 </resources>
