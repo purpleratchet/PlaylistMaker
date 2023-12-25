@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.ui.activity
+package com.example.playlistmaker.search.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -10,12 +10,13 @@ import android.os.Looper
 import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.TrackPlayerModel
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.model.TrackSearchModel
@@ -24,7 +25,7 @@ import com.example.playlistmaker.search.ui.model.ScreenState
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
     private val tracks = ArrayList<TrackSearchModel>()
     private val tracksHistory = ArrayList<TrackSearchModel>()
@@ -33,16 +34,23 @@ class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var userInput = ""
     private var clickAllowed = true
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater).also {
-            setContentView(it.root)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewModel.stateLiveData().observe(this) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.stateLiveData().observe(viewLifecycleOwner) {
             updateScreen(it)
         }
 
@@ -51,9 +59,6 @@ class SearchActivity : AppCompatActivity() {
             rvHistory.adapter = historyAdapter
             clearHistoryButton.visibility = View.GONE
             historyMessage.visibility = View.GONE
-        }
-        binding.btnSearchBack.setOnClickListener {
-            finish()
         }
         buttonsConfig()
         queryInputConfig(initTextWatcher())
@@ -79,7 +84,6 @@ class SearchActivity : AppCompatActivity() {
         binding.apply {
             clearImageView.setOnClickListener {
                 searchEditText.setText("")
-                hideKeyboard()
                 tracks.clear()
                 viewModel.getTracksHistory()
                 searchAdapter.notifyDataSetChanged()
@@ -117,14 +121,9 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         outState.putString(USER_INPUT, userInput)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        userInput = savedInstanceState.getString(USER_INPUT, "")
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -160,7 +159,7 @@ class SearchActivity : AppCompatActivity() {
                 track.previewUrl
             )
             viewModel.addTrackToHistory(track)
-            val playIntent = Intent(this, PlayerActivity::class.java)
+            val playIntent = Intent(activity, PlayerActivity::class.java)
                 .putExtra(EXTRA_TRACK, trackPlayerModel)
             startActivity(playIntent)
         }
@@ -225,7 +224,6 @@ class SearchActivity : AppCompatActivity() {
                     clearHistoryButton.visibility = View.GONE
                     progressSearch.visibility = View.VISIBLE
                     progressBar.visibility = View.VISIBLE
-                    hideKeyboard()
                 }
 
                 is ScreenState.ContentHistoryList -> {
@@ -252,13 +250,3 @@ class SearchActivity : AppCompatActivity() {
         private const val EXTRA_TRACK = "EXTRA_TRACK"
     }
 }
-
-
-
-
-
-
-
-
-
-
