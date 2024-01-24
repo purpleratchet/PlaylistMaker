@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -103,7 +102,7 @@ class SearchFragment : Fragment() {
             }
 
             refresh.setOnClickListener {
-                viewModel.searchDebounce(userInput, true)
+                viewModel.debouncedSearch(userInput)
             }
         }
     }

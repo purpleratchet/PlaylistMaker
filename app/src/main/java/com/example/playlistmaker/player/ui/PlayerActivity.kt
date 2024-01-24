@@ -75,7 +75,7 @@ class PlayerActivity : AppCompatActivity() {
 
 
     private fun updateTimer(time: String) {
-        binding.progressTime.text = time
+        if (viewModel.observeState().value != PlayerState.Prepared) { binding.progressTime.text = time }
     }
 
     private fun updateScreen(state: PlayerState) {

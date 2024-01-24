@@ -1,7 +1,12 @@
 package com.example.playlistmaker.player.ui.viewmodel
 
-import android.os.Handler
-import android.os.Looper
+import android.media.MediaPlayer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,17 +20,20 @@ class PlayerViewModel(
     private val trackUrl: String
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var timerJob: Job? = null
+    private var clickAllowed = true
+    private val player: MediaPlayer = MediaPlayer()
 
     private val stateLiveData = MutableLiveData<PlayerState>()
     private val timerLiveData = MutableLiveData<String>()
+    private val viewModelScope = CoroutineScope(Dispatchers.Main)
     private val clickAllowedLiveData = MutableLiveData<Boolean>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
     fun observeTimer(): LiveData<String> = timerLiveData
     fun observeClickAllowed(): LiveData<Boolean> = clickAllowedLiveData
 
     init {
-        renderState(PlayerState.Default)
+        renderState(PlayerState.Prepared)
         preparePlayer()
         setOnCompleteListener()
         isClickAllowed()
@@ -54,7 +62,6 @@ class PlayerViewModel(
     private fun setOnCompleteListener() {
         playerInteractor.setOnCompletionListener {
             renderState(PlayerState.Prepared)
-            timerLiveData.postValue("00:00")
         }
     }
 
@@ -66,12 +73,23 @@ class PlayerViewModel(
 
             is PlayerState.Paused -> {
                 startAudioPlayer()
-                handler.post(updateTime())
+                timerJob = viewModelScope.launch {
+                    while (isActive) {
+                        updateTime()
+                        delay(PLAYBACK_UPDATE_DELAY_MS)
+                    }
+                }
             }
 
             is PlayerState.Prepared -> {
                 startAudioPlayer()
-                handler.post(updateTime())
+                timerJob = viewModelScope.launch {
+                    while (isActive) {
+                        updateTime()
+                        delay(PLAYBACK_UPDATE_DELAY_MS)
+                        timerLiveData.postValue("00:00")
+                    }
+                }
             }
 
             else -> {}
@@ -83,37 +101,42 @@ class PlayerViewModel(
     }
 
     override fun onCleared() {
-        handler.removeCallbacksAndMessages(null)
+        super.onCleared()
+        releaseAudioPlayer()
     }
 
     fun onPause() {
         pauseAudioPlayer()
-        handler.removeCallbacksAndMessages(updateTime())
     }
 
+    fun onPlay() {
+        playbackControl()
+    }
 
-    private fun updateTime(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                if (stateLiveData.value is PlayerState.Playing || stateLiveData.value is PlayerState.Paused) {
-                    val time = getCurrentPosition()
-                    val timeFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
-                    val formattedTime = timeFormat.format(time)
-                    timerLiveData.postValue(formattedTime)
-                } else {
-                    timerLiveData.postValue("00:00")
-                }
-                handler.postDelayed(this, PLAYBACK_UPDATE_DELAY_MS)
-            }
-        }
+    private val timeFormat: SimpleDateFormat by lazy {
+        SimpleDateFormat("mm:ss", Locale.getDefault())
+    }
+    private fun updateTime() {
+        timerLiveData.postValue(
+            timeFormat.format(getCurrentPosition())
+        )
     }
 
     private fun isClickAllowed() {
         val current = clickAllowedLiveData.value
         if (current == null || current) {
             clickAllowedLiveData.postValue(false)
-            handler.postDelayed({ clickAllowedLiveData.postValue(true) }, CLICK_DEBOUNCE_DELAY_MS)
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MS)
+                clickAllowed = true
+            }
         }
+    }
+
+    private fun releaseAudioPlayer() {
+        player.stop()
+        player.release()
+        renderState(PlayerState.Default)
     }
 
     companion object {

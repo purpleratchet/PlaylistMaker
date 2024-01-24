@@ -9,39 +9,43 @@ import com.example.playlistmaker.search.data.network.NetworkClient
 import com.example.playlistmaker.search.domain.api.SearchRepository
 import com.example.playlistmaker.search.domain.model.TrackSearchModel
 import javax.net.ssl.HttpsURLConnection
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient,
     private val searchDataStorage: SearchDataStorage
 ) : SearchRepository {
 
-    override fun searchTrack(expression: String): ResponseStatus<List<TrackSearchModel>> {
-        val response = networkClient.doRequest(TracksSearchRequest(expression))
-
-        return when (response.resultCode) {
-            -1 -> {
-                ResponseStatus.Error()
-            }
-
-            HttpsURLConnection.HTTP_OK -> {
-                ResponseStatus.Success((response as TracksSearchResponse).results.map {
-                    TrackSearchModel(
-                        it.trackId,
-                        it.trackName,
-                        it.artistName,
-                        it.trackTimeMillis,
-                        it.artworkUrl100,
-                        it.collectionName,
-                        it.releaseDate,
-                        it.primaryGenreName,
-                        it.country,
-                        it.previewUrl
-                    )
-                })
-            }
+    override suspend fun searchTrack(expression: String): Flow<ResponseStatus<List<TrackSearchModel>>> =
+        flow {
+            val response = networkClient.doRequest(TracksSearchRequest(expression))
+            when (response.resultCode) {
+                -1 -> {
+                    emit(ResponseStatus.Error())
+                }
+                HttpsURLConnection.HTTP_OK -> {
+                    with(response as TracksSearchResponse) {
+                        val data = results.map {
+                            TrackSearchModel(
+                                it.trackId,
+                                it.trackName,
+                                it.artistName,
+                                it.trackTimeMillis,
+                                it.artworkUrl100,
+                                it.collectionName,
+                                it.releaseDate,
+                                it.primaryGenreName,
+                                it.country,
+                                it.previewUrl
+                            )
+                        }
+                        emit(ResponseStatus.Success(data))
+                    }
+                }
 
             else -> {
-                ResponseStatus.Error()
+                emit(ResponseStatus.Error())
             }
         }
     }
