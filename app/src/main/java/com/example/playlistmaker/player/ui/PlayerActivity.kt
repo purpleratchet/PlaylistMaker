@@ -8,6 +8,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
 import com.example.playlistmaker.player.domain.TrackPlayerModel
 import com.example.playlistmaker.player.domain.api.PlayerState
+import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.math.roundToInt
@@ -74,7 +75,7 @@ class PlayerActivity : AppCompatActivity() {
 
 
     private fun updateTimer(time: String) {
-        binding.progressTime.text = time
+        if (viewModel.observeState().value != PlayerState.Prepared) { binding.progressTime.text = time }
     }
 
     private fun updateScreen(state: PlayerState) {

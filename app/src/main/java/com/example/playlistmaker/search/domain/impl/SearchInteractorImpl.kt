@@ -4,24 +4,18 @@ import com.example.playlistmaker.search.domain.ResponseStatus
 import com.example.playlistmaker.search.domain.api.SearchInteractor
 import com.example.playlistmaker.search.domain.api.SearchRepository
 import com.example.playlistmaker.search.domain.model.TrackSearchModel
-import java.util.concurrent.Executors
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SearchInteractorImpl(
     private val repository: SearchRepository
 ) : SearchInteractor {
 
-    private val executor = Executors.newCachedThreadPool()
-
-    override fun searchTracks(expression: String, consumer: SearchInteractor.SearchConsumer) {
-        executor.execute {
-            when (val resource = repository.searchTrack(expression)) {
-                is ResponseStatus.Success -> {
-                    consumer.consume(resource.data, false)
-                }
-
-                is ResponseStatus.Error -> {
-                    consumer.consume(null, true)
-                }
+    override suspend fun searchTracks(expression: String): Flow<Pair<List<TrackSearchModel>?, String?>> {
+        return repository.searchTrack(expression).map { resource ->
+            when (resource) {
+                is ResponseStatus.Success<*> -> Pair(resource.data, null)
+                is ResponseStatus.Error<*> -> Pair(null, "Ошибка сервера")
             }
         }
     }
