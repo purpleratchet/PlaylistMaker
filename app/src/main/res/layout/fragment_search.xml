@@ -119,10 +119,10 @@
             tools:listitem="@layout/layout_track" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_history"
+            android:id="@+id/rvHistory"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.01"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/layout_track" />
 

@@ -16,6 +16,8 @@ import com.example.playlistmaker.utils.iTunesBaseUrl
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.get
+import androidx.room.Room
+import com.example.playlistmaker.library.data.db.AppDatabase
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -57,4 +59,9 @@ val dataModule = module {
     }
 
     factory { Gson() }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
 }

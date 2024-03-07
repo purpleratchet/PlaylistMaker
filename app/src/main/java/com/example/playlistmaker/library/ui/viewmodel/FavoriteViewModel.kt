@@ -1,10 +1,40 @@
-package com.example.playlistmaker.library.ui.viewmodel
+package com.example.playlistmaker.library.ui.viewModel
+
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.R
+import com.example.playlistmaker.library.domain.db.FavoritesInteractor
+import com.example.playlistmaker.library.ui.state.FavoritesState
+import kotlinx.coroutines.launch
 
-class FavoriteViewModel : ViewModel() {
+class FavoriteViewModel(
+    private val favoritesInteractor: FavoritesInteractor,
+    application: Application
+) : AndroidViewModel(application) {
+    private var favoritesState = MutableLiveData<FavoritesState>(FavoritesState.Loading)
+    fun observeFavoritesState(): LiveData<FavoritesState> = favoritesState
 
-    private var _liveData = MutableLiveData<String>()
-    val liveData: LiveData<String> = _liveData
+    init {
+        fillData()
+    }
+
+    fun fillData() {
+        viewModelScope.launch {
+            favoritesInteractor.favoritesTracks()
+                .collect { dbTracks ->
+                    if (dbTracks.isEmpty()) {
+                        favoritesState.postValue(
+                            FavoritesState.Empty(
+                                getApplication<Application>().getString(R.string.no_favorites)
+                            )
+                        )
+                    } else {
+                        favoritesState.postValue(FavoritesState.Content(dbTracks))
+                    }
+                }
+        }
+    }
 }

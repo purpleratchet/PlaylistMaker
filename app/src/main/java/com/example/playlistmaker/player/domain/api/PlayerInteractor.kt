@@ -1,16 +1,23 @@
 package com.example.playlistmaker.player.domain.api
 
+
 interface PlayerInteractor {
-    fun preparePlayer(url: String, onPreparedListener: () -> Unit)
+    fun preparePlayer(
+        url: String,
+        onPreparedPlayer: () -> Unit,
+        onCompletionPlayer: () -> Unit
+    )
+
 
     fun setOnCompletionListener(onCompletionListener: () -> Unit)
 
     fun getCurrentPosition(): Int
+    fun startPlayer(onStartPlayer: () -> Unit)
+    fun pausePlayer(onPausePlayer: () -> Unit)
 
-    fun startPlayer()
 
-    fun pausePlayer()
 
     fun destroyPlayer()
-
+    fun playbackControl(onStartPlayer: () -> Unit, onPausePlayer: () -> Unit)
+    fun isPlaying(): Boolean
 }

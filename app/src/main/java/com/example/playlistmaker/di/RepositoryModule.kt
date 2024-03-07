@@ -9,10 +9,13 @@ import com.example.playlistmaker.settings.domain.api.SettingsRepository
 import com.example.playlistmaker.sharing.data.SharingRepositoryImpl
 import com.example.playlistmaker.sharing.domain.api.SharingRepository
 import org.koin.dsl.module
+import com.example.playlistmaker.library.data.converters.TrackDbConverter
+import com.example.playlistmaker.library.data.impl.FavoritesRepositoryImpl
+import com.example.playlistmaker.library.domain.db.FavoritesRepository
 
 val repositoryModule = module {
     factory<PlayerRepository> {
-        PlayerRepositoryImpl(player = get())
+        PlayerRepositoryImpl()
     }
 
     factory<SettingsRepository> {
@@ -24,6 +27,12 @@ val repositoryModule = module {
     }
 
     factory<SearchRepository> {
-        SearchRepositoryImpl(networkClient = get(), searchDataStorage = get())
+        SearchRepositoryImpl(networkClient = get(), searchDataStorage = get(), appDatabase = get())
+    }
+    factory {
+        TrackDbConverter()
+    }
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
     }
 }

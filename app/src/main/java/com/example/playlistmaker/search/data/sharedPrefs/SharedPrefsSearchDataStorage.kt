@@ -1,56 +1,66 @@
 package com.example.playlistmaker.search.data.sharedPrefs
 
-import android.app.Application
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.SearchDataStorage
-import com.example.playlistmaker.search.data.dto.TrackDto
-import com.example.playlistmaker.utils.SEARCH_HISTORY_KEY
-import com.example.playlistmaker.utils.SHARED_PREFERENCES
+import com.example.playlistmaker.search.domain.model.TrackSearchModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 
-@Suppress("UNCHECKED_CAST")
 class SharedPrefsSearchDataStorage(
     private val sharedPref: SharedPreferences,
     private val gson: Gson
 ) : SearchDataStorage {
-    private val historyList = readFromSharedPref()
 
-    override fun getSearchHistory() = historyList
-
-    override fun clearHistory() {
-        historyList.clear()
-        updateSharedPref()
-    }
-
-    override fun addTrackToHistory(track: TrackDto) {
-        if (historyList.contains(track)) {
-            historyList.remove(track)
+    override fun addTrackToHistory(item: TrackSearchModel) {
+        val sharedPrefsTracks = sharedPref.getString(SAVED_TRACKS, null)
+        sharedPrefsTracks?.let { tracksJson ->
+            val tracksArray = createTrackListFromJson(tracksJson)
+            if (doesTrackExist(item, tracksArray)) {
+                tracksArray.remove(item)
+            } else if (tracksArray.size >= HISTORY_LIST_SIZE) {
+                tracksArray.removeAt(HISTORY_LIST_SIZE - 1)
+            }
+            tracksArray.add(0, item)
+            sharedPref.edit()
+                .putString(SAVED_TRACKS, createJsonFromTrackList(tracksArray))
+                .apply()
+        } ?: run {
+            val tracksArray: ArrayList<TrackSearchModel> = arrayListOf(item)
+            sharedPref.edit()
+                .putString(SAVED_TRACKS, createJsonFromTrackList(tracksArray))
+                .apply()
         }
-        if (historyList.size == HISTORY_LIST_SIZE) {
-            historyList.removeLast()
-        }
-        historyList.add(FIRST, track)
-        updateSharedPref()
     }
 
-    private fun updateSharedPref() {
-        sharedPref.edit().remove(SEARCH_HISTORY_KEY)
-            .putString(SEARCH_HISTORY_KEY, gson.toJson(historyList)).apply()
+    override fun returnSavedTracks(): ArrayList<TrackSearchModel> {
+        val sharedPrefsTracks = sharedPref.getString(SAVED_TRACKS, null)
+        return sharedPrefsTracks?.let { createTrackListFromJson(it) } ?: ArrayList()
     }
 
-    private fun readFromSharedPref(): ArrayList<TrackDto> {
-        val json = sharedPref.getString(SEARCH_HISTORY_KEY, null) ?: return ArrayList()
-        val type: Type = object : TypeToken<ArrayList<TrackDto?>?>() {}.type
-        return Gson().fromJson<Any>(json, type) as ArrayList<TrackDto>
+    override fun clearSavedTracks() {
+        sharedPref.edit()
+            .remove(SAVED_TRACKS)
+            .apply()
+    }
+
+    private fun doesTrackExist(
+        newTrack: TrackSearchModel,
+        trackList: ArrayList<TrackSearchModel>
+    ): Boolean {
+        return trackList.any { it.trackId == newTrack.trackId }
+    }
+
+    private fun createJsonFromTrackList(tracks: ArrayList<TrackSearchModel>): String {
+        return gson.toJson(tracks)
+    }
+
+    private fun createTrackListFromJson(json: String?): ArrayList<TrackSearchModel> {
+        val itemType = object : TypeToken<ArrayList<TrackSearchModel>>() {}.type
+        return gson.fromJson(json, itemType)
     }
 
     companion object {
-        private const val HISTORY_LIST_SIZE = 10
-        private const val FIRST = 0
+        const val HISTORY_LIST_SIZE = 10
+        const val SAVED_TRACKS = "saved_tracks"
     }
-
 }
