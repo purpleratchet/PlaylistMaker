@@ -1,10 +1,10 @@
-package com.example.playlistmaker.player.ui.viewModel
+package com.example.playlistmaker.player.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.library.domain.db.FavoritesInteractor
+import com.example.playlistmaker.library.domain.api.FavoritesInteractor
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.ui.PlayerState
 import com.example.playlistmaker.search.domain.model.TrackSearchModel

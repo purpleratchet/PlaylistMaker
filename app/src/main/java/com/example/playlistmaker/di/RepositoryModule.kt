@@ -11,7 +11,7 @@ import com.example.playlistmaker.sharing.domain.api.SharingRepository
 import org.koin.dsl.module
 import com.example.playlistmaker.library.data.converters.TrackDbConverter
 import com.example.playlistmaker.library.data.impl.FavoritesRepositoryImpl
-import com.example.playlistmaker.library.domain.db.FavoritesRepository
+import com.example.playlistmaker.library.domain.api.FavoritesRepository
 
 val repositoryModule = module {
     factory<PlayerRepository> {

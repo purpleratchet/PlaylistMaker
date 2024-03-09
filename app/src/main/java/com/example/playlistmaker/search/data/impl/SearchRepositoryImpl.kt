@@ -9,8 +9,10 @@ import com.example.playlistmaker.search.data.network.NetworkClient
 import com.example.playlistmaker.search.domain.ResponseStatus
 import com.example.playlistmaker.search.domain.api.SearchRepository
 import com.example.playlistmaker.search.domain.model.TrackSearchModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.net.ssl.HttpsURLConnection
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -26,7 +28,7 @@ class SearchRepositoryImpl(
                     emit(ResponseStatus.Error())
                 }
                 HttpsURLConnection.HTTP_OK -> {
-                    val favoritesID = appDatabase.trackDao().getTracksID()
+                    val favoritesID = withContext(Dispatchers.IO) { appDatabase.trackDao().getTracksID() }
                     emit(
                         ResponseStatus.Success((response as TracksSearchResponse).results.map {
                             TrackSearchModel(
@@ -52,7 +54,7 @@ class SearchRepositoryImpl(
         }
 
     override suspend fun returnSavedTracks(): ArrayList<TrackSearchModel> {
-        val favouritesId = appDatabase.trackDao().getTracksID()
+        val favouritesId = withContext(Dispatchers.IO) { appDatabase.trackDao().getTracksID() }
         val localTracks = searchDataStorage.returnSavedTracks()
         localTracks.forEach { it.isFavorite = favouritesId.contains(it.trackId) }
         return localTracks

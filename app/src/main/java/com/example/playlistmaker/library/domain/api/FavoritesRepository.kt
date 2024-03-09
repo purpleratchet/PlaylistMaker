@@ -1,10 +1,9 @@
-package com.example.playlistmaker.library.domain.db
+package com.example.playlistmaker.library.domain.api
 
-import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.search.domain.model.TrackSearchModel
 import kotlinx.coroutines.flow.Flow
 
-interface FavoritesInteractor {
+interface FavoritesRepository {
 
     fun favoritesTracks(): Flow<List<TrackSearchModel>>
     fun getFavoritesID(): Flow<List<Long>>

@@ -19,8 +19,8 @@ import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.model.TrackSearchModel
 import com.example.playlistmaker.search.ui.TracksAdapter
 import com.example.playlistmaker.search.ui.model.ScreenState
-import com.example.playlistmaker.search.ui.viewModel.SearchViewModel
-import com.example.playlistmaker.search.ui.viewModel.SearchViewModel.Companion.EXTRA_TRACK
+import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
+import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel.Companion.EXTRA_TRACK
 import com.example.playlistmaker.utils.Debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
