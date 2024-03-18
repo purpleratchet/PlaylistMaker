@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="16dp"
     android:paddingEnd="8dp">
 
     <androidx.cardview.widget.CardView
@@ -22,7 +21,9 @@
             android:id="@+id/iv_playlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="center" />
+            android:scaleType="centerCrop"
+            android:background="@color/main_white"
+            android:src="@drawable/playlist_placeholder"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -44,6 +45,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_gray"
         android:textSize="12sp"
+        android:paddingBottom="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_name_of_playlist"

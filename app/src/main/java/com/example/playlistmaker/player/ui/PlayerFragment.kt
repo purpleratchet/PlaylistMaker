@@ -51,6 +51,16 @@ class PlayerFragment : Fragment() {
         bottomNavigationListener = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        hideBottomNavigation(true)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        hideBottomNavigation(false)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -153,7 +163,6 @@ class PlayerFragment : Fragment() {
             viewModel.releaseAudioPlayer()
             findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment)
         }
-
     }
 
     private fun initializeViews() {

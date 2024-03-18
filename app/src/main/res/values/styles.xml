@@ -319,7 +319,7 @@
         <item name="cornerRadius">54dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">46dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
     </style>
     <style name="LibraryTextStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>

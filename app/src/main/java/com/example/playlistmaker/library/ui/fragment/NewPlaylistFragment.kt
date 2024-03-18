@@ -1,6 +1,7 @@
 package com.example.playlistmaker.library.ui.fragment
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -20,7 +21,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.viewmodel.NewPlaylistViewModel
@@ -42,7 +45,7 @@ class NewPlaylistFragment : Fragment() {
         super.onAttach(context)
         if (context is BottomNavigationListener) {
             bottomNavigationListener = context
-        } else {}
+        }
     }
 
     override fun onDetach() {
@@ -61,12 +64,6 @@ class NewPlaylistFragment : Fragment() {
     @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                checkForDialogOutput()
-            }
-        })
 
         binding.editNameNewPlaylist.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -131,6 +128,16 @@ class NewPlaylistFragment : Fragment() {
         hideBottomNavigation(false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                checkForDialogOutput()
+            }
+        })
+    }
+
     private fun hideBottomNavigation(isHide: Boolean) {
         bottomNavigationListener?.toggleBottomNavigationViewVisibility(!isHide)
     }
@@ -140,13 +147,14 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun checkForDialogOutput() {
+
         if (imageIsLoaded ||
             binding.editNameNewPlaylist.text.toString().isNotEmpty() ||
-            binding.editDescriptionNewPlaylist.text.toString().isNotEmpty()
-        ) {
+            binding.editDescriptionNewPlaylist.text.toString().isNotEmpty())
+        {
             showDialog()
         } else {
-            findNavController().navigateUp()
+            requireActivity().findNavController(R.id.container_view).navigateUp()
         }
     }
 
@@ -154,7 +162,7 @@ class NewPlaylistFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Завершить задание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны")
-            .setNeutralButton("Отмена") { dialog, which ->
+            .setNegativeButton("Отмена") { dialog, which ->
             }
             .setPositiveButton("Завершить") { dialog, which ->
                 findNavController().navigateUp()
@@ -175,5 +183,4 @@ class NewPlaylistFragment : Fragment() {
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
-
 }

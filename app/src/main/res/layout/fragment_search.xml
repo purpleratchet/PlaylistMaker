@@ -24,7 +24,8 @@
             android:id="@+id/searchEditText"
             style="@style/searchEditTextStyle"
             android:hint="@string/search"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            android:textCursorDrawable="@drawable/custom_cursor"/>
 
         <ImageView
             style="@style/searchIconStyle"
