@@ -11,7 +11,7 @@ data class TrackSearchModel(
     @SerializedName("trackTimeMillis") val trackTimeMillis: String,
     @SerializedName("artworkUrl100") val artworkUrl100: String,
     val collectionName: String,
-    val releaseDate: String,
+    val releaseDate: String?,
     val primaryGenreName: String?,
     val country: String,
     val previewUrl: String,

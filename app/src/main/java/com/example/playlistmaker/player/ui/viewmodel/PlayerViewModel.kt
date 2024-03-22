@@ -26,6 +26,7 @@ class PlayerViewModel(
     private val playlistTrackDatabaseInteractor: PlaylistTrackDatabaseInteractor,
     private val playlistDatabaseInteractor: PlaylistDatabaseInteractor,
 ) : ViewModel() {
+    private var currentPosition: String = "00:00"
 
     private var timerJob: Job? = null
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
@@ -48,6 +49,7 @@ class PlayerViewModel(
             timerJob?.cancel()
             playerState.postValue(PlayerState.Prepared())
         }
+        if (playerState.value is PlayerState.Paused) startAudioPlayer()()
     }
     fun playbackControl() {
         playerInteractor.playbackControl(
@@ -70,19 +72,28 @@ class PlayerViewModel(
             isFavorite.postValue(false)
         }
     }
+
     private fun startAudioPlayer(): () -> Unit = {
         playerInteractor.startPlayer {
             playerState.postValue(PlayerState.Playing(getCurrentPosition()))
             updateTime()
         }
+
     }
     private fun pauseAudioPlayer(): () -> Unit = {
+        currentPosition = getCurrentPosition()
         playerInteractor.pausePlayer {
             timerJob?.cancel()
             if (playerState.value is PlayerState.Playing) {
-                playerState.postValue(PlayerState.Paused(getCurrentPosition()))
+                playerState.postValue(PlayerState.Paused(currentPosition))
             }
         }
+    }
+    fun returnToPlayer() {
+        startAudioPlayer()
+        playerInteractor.seekTo(currentPosition)
+        playerState.postValue(PlayerState.Playing(getCurrentPosition()))
+        updateTime()
     }
     private val timeFormat: SimpleDateFormat by lazy {
         SimpleDateFormat("mm:ss", Locale.getDefault())
@@ -104,8 +115,8 @@ class PlayerViewModel(
     }
 
     fun releaseAudioPlayer() {
+        timerJob?.cancel()
         playerInteractor.destroyPlayer()
-        playerState.value = PlayerState.Default()
     }
 
     fun getPlaylists() {

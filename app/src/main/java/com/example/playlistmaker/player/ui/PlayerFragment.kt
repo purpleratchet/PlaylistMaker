@@ -31,7 +31,7 @@ class PlayerFragment : Fragment() {
     private lateinit var binding: FragmentPlayerBinding
     private lateinit var playButton: ImageButton
     private lateinit var timer: TextView
-
+    private val viewModel by viewModel<PlayerViewModel>()
     private var bottomNavigationListener: BottomNavigationListener? = null
     private var allowToEmit = false
     private var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
@@ -53,6 +53,7 @@ class PlayerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.returnToPlayer()
         hideBottomNavigation(true)
     }
 
@@ -184,14 +185,14 @@ class PlayerFragment : Fragment() {
             artistName.text = track.artistName
             trackTimeResult.text = track.trackTimeMillis
             collectionName.text = track.collectionName
-            releaseDate.text = track.releaseDate.substring(0, 4)
+            releaseDate.text = track.releaseDate?.substring(0, 4)
             primaryGenreName.text = track.primaryGenreName
             country.text = track.country
             progressTime.text = getString(R.string.default_playtime_value)
         }
         Glide.with(this)
             .load(track.artworkUrl100)
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.playlist_placeholder)
             .transform(CenterCrop(), RoundedCorners(8))
             .into(binding.trackCover)
     }

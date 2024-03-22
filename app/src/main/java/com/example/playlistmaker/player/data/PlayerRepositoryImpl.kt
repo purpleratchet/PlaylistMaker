@@ -36,4 +36,8 @@ class PlayerRepositoryImpl : PlayerRepository {
     override fun isPlaying(): Boolean {
         return player.isPlaying
     }
+
+    override fun seekTo(position: String) {
+        player.seekTo(position.split(":")[1].toInt() * 1000)
+    }
 }

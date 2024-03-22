@@ -27,6 +27,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.viewmodel.NewPlaylistViewModel
+import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.root.BottomNavigationListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ class NewPlaylistFragment : Fragment() {
     private var bottomNavigationListener: BottomNavigationListener? = null
     private lateinit var binding: FragmentNewPlaylistBinding
     private val PLviewModel: NewPlaylistViewModel by viewModel()
+    private val viewModel: PlayerViewModel by viewModel()
     private var imageIsLoaded = false
     private var uriOfImage: Uri? = null
 
@@ -159,7 +161,7 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun showDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog)
             .setTitle("Завершить задание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны")
             .setNegativeButton("Отмена") { dialog, which ->

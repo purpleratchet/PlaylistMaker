@@ -87,9 +87,11 @@ class SearchFragment : Fragment() {
                 userInput = s.toString()
                 viewModel.searchDebounce(userInput)
                 binding.historyMessage.visibility = View.GONE
+                binding.clearHistoryButton.visibility = View.GONE
             }
             override fun afterTextChanged(s: Editable?) {
                 binding.historyMessage.visibility = View.GONE
+                binding.clearHistoryButton.visibility = View.GONE
             }
         }
         textWatcher?.let { binding.searchEditText.addTextChangedListener(it) }
