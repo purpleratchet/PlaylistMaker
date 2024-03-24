@@ -32,6 +32,10 @@ class PlayerInteractorImpl(
         }
     }
 
+    override fun seekTo(position: String) {
+        playerRepository.seekTo(position)
+    }
+
     override fun getCurrentPosition(): Int {
         return playerRepository.getCurrentPosition()
     }

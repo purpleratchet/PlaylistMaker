@@ -10,4 +10,5 @@ interface PlayerRepository {
     fun pausePlayer()
     fun destroyPlayer()
     fun isPlaying(): Boolean
+    fun seekTo(position: String)
 }

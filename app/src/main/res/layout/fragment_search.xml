@@ -24,7 +24,8 @@
             android:id="@+id/searchEditText"
             style="@style/searchEditTextStyle"
             android:hint="@string/search"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            android:textCursorDrawable="@drawable/custom_cursor"/>
 
         <ImageView
             style="@style/searchIconStyle"
@@ -106,7 +107,8 @@
         <TextView
             android:id="@+id/history_message"
             style="@style/history_message_Style"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchResult"
@@ -129,7 +131,8 @@
         <Button
             android:id="@+id/clearHistoryButton"
             style="@style/ClearBtnStyle"
-            app:backgroundTint="@color/main_black" />
+            app:backgroundTint="@color/main_black"
+            android:visibility="gone"/>
 
 
     </LinearLayout>

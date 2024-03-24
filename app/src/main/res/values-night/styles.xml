@@ -1,66 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="PlaylistBtnStyle">
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:letterSpacing">0</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="cornerRadius">54dp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">46dp</item>
-    </style>
-
-    <style name="LibraryTextStyle">
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="colorAccent">@color/purple_500</item>
-        <item name="android:textSize">19sp</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:layout_marginTop">16dp</item>
-    </style>
-
-    <style name="LibraryContainerStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="LibraryImageStyle">
-        <item name="android:layout_width">120dp</item>
-        <item name="android:layout_height">120dp</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:background">@drawable/ic_no_results</item>
-    </style>
-
-    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/main_black</item>
-        <item name="tabRippleColor">@color/main_black</item>
-        <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabTextColor">@color/main_black</item>
-        <item name="tabSelectedTextColor">@color/main_black</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:letterSpacing">0</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="TabLayoutTextStyle">
-        <item name="android:textColor">@color/main_black</item>
-    </style>
-
-    <style name="trackName.Result">
-        <item name="android:textColor">@color/white</item>
-    </style>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="MainTitleText">
         <item name="android:layout_width">150dp</item>
@@ -75,7 +14,6 @@
         <item name="android:textSize">@dimen/mainTextSize</item>
         <item name="android:textStyle">bold</item>
     </style>
-
     <style name="MainButtonStyle">parent="Widget.MaterialComponents.Button.UnelevatedButton"
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
@@ -96,7 +34,6 @@
         <item name="iconPadding">@dimen/iconPadding</item>
         <item name="cornerRadius">@dimen/cornerRadius</item>/>
     </style>
-
     <style name="SettingsBackBtnStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">56dp</item>
@@ -113,7 +50,6 @@
         <item name="android:background">@null</item>
         <item name="android:outlineProvider">none</item>
     </style>
-
     <style name="searchEditTextStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">36dp</item>
@@ -127,22 +63,17 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/gray</item>
         <item name="android:textSize">@dimen/settingsTextSize</item>
-        <item name="android:textCursorDrawable">@drawable/custom_cursor</item>
     </style>
-
     <style name="searchIconStyle">
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
         <item name="android:background">@drawable/edit_text_rounded_bg</item>
         <item name="android:src">@drawable/ic_search_night</item>
     </style>
-
     <style name="clearIconStyle">
-        <item name="android:layout_gravity">end</item>
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
         <item name="android:background">@drawable/edit_text_rounded_bg</item>
         <item name="android:src">@drawable/ic_clear_search_night</item>
     </style>
-
     <style name="SettingsLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/settingsLayoutHeightSize</item>
@@ -151,7 +82,6 @@
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
-
     <style name="SettingsTextStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -162,15 +92,11 @@
         <item name="android:textSize">@dimen/settingsTextSize</item>
         <item name="android:textStyle">bold</item>
     </style>
-
     <style name="SettingsImageStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">end</item>
-        <item name="colorControlActivated">@color/blue</item>
-
     </style>
-
     <style name="trackArtwork">
         <item name="android:layout_width">45dp</item>
         <item name="android:layout_height">45dp</item>
@@ -179,7 +105,6 @@
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
-
     <style name="trackInfo">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -190,16 +115,13 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">vertical</item>
     </style>
-
     <style name="trackName">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">19dp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#FFFFFF</item>
     </style>
-
     <style name="artist_time_layout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">13dp</item>
@@ -207,7 +129,6 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
     </style>
-
     <style name="artist_time">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -216,7 +137,6 @@
         <item name="android:maxLines">1</item>
         <item name="android:textSize">11sp</item>
     </style>
-
     <style name="dot_style">
         <item name="android:layout_width">3dp</item>
         <item name="android:layout_height">3dp</item>
@@ -224,7 +144,6 @@
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:layout_weight">0</item>
     </style>
-
     <style name="right_arrow">
         <item name="android:layout_width">9dp</item>
         <item name="android:layout_height">14dp</item>
@@ -233,7 +152,6 @@
         <item name="android:layout_marginBottom">23dp</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
-
     <style name="error_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -243,20 +161,17 @@
         <item name="android:textSize">19sp</item>
         <item name="android:layout_marginTop">140dp</item>
     </style>
-
     <style name="error_image">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
-
     <style name="error_frameLayout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">400dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginTop">102dp</item>
     </style>
-
     <style name="RefreshBtnStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -269,7 +184,6 @@
         <item name="android:layout_marginTop">80dp</item>
         <item name="android:background">@drawable/refresh_button</item>
     </style>
-
     <style name="ClearBtnStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -283,11 +197,10 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/ic_clear_history</item>
     </style>
-
     <style name="history_message_Style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">50dp</item>
+        <item name="android:layout_marginTop">24dp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:gravity">center</item>
         <item name="android:text">Вы искали</item>
@@ -296,17 +209,12 @@
     </style>
 
     <style name="playerBackBtnStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">56dp</item>
-        <item name="android:backgroundTint">@color/black</item>
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="icon">@drawable/ic_arrow_back</item>
-        <item name="iconGravity">start</item>
-        <item name="iconPadding">@dimen/iconPadding</item>
-        <item name="iconTint">@color/white</item>
-        <item name="android:background">@null</item>
-        <item name="android:outlineProvider">none</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="tint">@color/main_black</item>
     </style>
+
     <style name="playerTrackInfo">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -316,7 +224,6 @@
         <item name="layout_constraintEnd_toEndOf">@id/rightBorder</item>
         <item name="layout_constraintStart_toStartOf">@id/leftBorder</item>
     </style>
-
     <style name="playerTrackResult">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -326,27 +233,27 @@
         <item name="layout_constraintEnd_toEndOf">@id/rightBorder</item>
     </style>
 
-    <style name="playerCoverTrack">
-        <item name="android:layout_width">312dp</item>
-        <item name="android:layout_height">312dp</item>
-        <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-        <item name="layout_constraintTop_toBottomOf">@+id/btnPlayerBack</item>
-        <item name="layout_constraintBottom_toTopOf">@+id/trackNameResult</item>
+    <style name="playerCoverTrackStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginHorizontal" tools:ignore="NewApi">8dp</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+        <item name="layout_constraintEnd_toStartOf">@id/rightBorder</item>
+        <item name="layout_constraintStart_toStartOf">@id/leftBorder</item>
+        <item name="layout_constraintTop_toBottomOf">@id/btnPlayerBack</item>
+        <item name="layout_constraintBottom_toTopOf">@id/trackName</item>
     </style>
 
-    <style name="playButton">
+    <style name="playButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint">@color/black</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="layout_constraintStart_toEndOf">@+id/btnAdd</item>
-        <item name="layout_constraintEnd_toStartOf">@+id/btnFavorite</item>
-        <item name="layout_constraintTop_toBottomOf">@+id/artistNameResult</item>
-        <item name="layout_constraintBottom_toTopOf">@+id/progressTime</item>
-        <item name="android:layout_marginTop">44dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:src">@drawable/ic_play_dark</item>
+        <item name="android:background">@null</item>
+        <item name="layout_constraintBottom_toTopOf">@id/trackTime_field</item>
+        <item name="layout_constraintEnd_toStartOf">@id/rightBorder</item>
+        <item name="layout_constraintStart_toStartOf">@id/leftBorder</item>
+        <item name="layout_constraintTop_toBottomOf">@id/artistName</item>
     </style>
 
     <style name="pauseButton">
@@ -357,37 +264,32 @@
         <item name="android:orientation">horizontal</item>
         <item name="layout_constraintStart_toEndOf">@+id/btnAdd</item>
         <item name="layout_constraintEnd_toStartOf">@+id/btnFavorite</item>
-        <item name="layout_constraintTop_toBottomOf">@+id/artistNameResult</item>
+        <item name="layout_constraintTop_toBottomOf">@+id/artistName</item>
         <item name="layout_constraintBottom_toTopOf">@+id/progressTime</item>
         <item name="android:layout_marginTop">44dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:src">@drawable/ic_pause_dark</item>
     </style>
 
-    <style name="addButton">
+    <style name="addButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint">@color/black</item>
-
-        <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintEnd_toStartOf">@+id/btnPlay</item>
-        <item name="layout_constraintTop_toBottomOf">@+id/artistNameResult</item>
-        <item name="layout_constraintBottom_toTopOf">@+id/progressTime</item>
-        <item name="android:layout_marginTop">44dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:background">@null</item>
+        <item name="layout_constraintBottom_toTopOf">@id/trackTime_field</item>
+        <item name="layout_constraintStart_toStartOf">@id/leftBorder</item>
+        <item name="layout_constraintTop_toBottomOf">@id/artistName</item>
         <item name="android:src">@drawable/ic_add_dark</item>
     </style>
 
     <style name="favoriteButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint">@color/black</item>
-        <item name="layout_constraintStart_toEndOf">@+id/btnPlay</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-        <item name="layout_constraintTop_toBottomOf">@+id/artistNameResult</item>
-        <item name="layout_constraintBottom_toTopOf">@+id/progressTime</item>
-        <item name="android:layout_marginTop">44dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@null</item>
+        <item name="layout_constraintBottom_toTopOf">@id/trackTime_field</item>
+        <item name="layout_constraintEnd_toStartOf">@id/rightBorder</item>
+        <item name="layout_constraintTop_toBottomOf">@id/artistName</item>
         <item name="android:src">@drawable/ic_favorite_dark</item>
     </style>
 
@@ -403,5 +305,72 @@
         <item name="android:layout_weight">1</item>
         <item name="android:src">@drawable/ic_dislike_dark</item>
     </style>
+    <style name="PlaylistBtnStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="cornerRadius">54dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">46dp</item>
+    </style>
+    <style name="LibraryTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorAccent">@color/purple_500</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+    <style name="LibraryContainerStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="LibraryImageStyle">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/ic_no_results</item>
+    </style>
+    <style name="TabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabRippleColor">@color/white</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TextInputLayoutStyleNewPlaylist" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <!-- Alert Dialog -->
+    <style name="MyThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+
+    <style name="PositiveButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
 
 </resources>

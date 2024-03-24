@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:context=".player.ui.PlayerFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/playerBackBtnStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/leftBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rightBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <ImageView
+                android:id="@+id/btnPlayerBack"
+                style="@style/playerBackBtnStyle"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="@id/leftBorder"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_back" />
+
+            <ImageView
+                android:id="@+id/track_cover"
+                style="@style/playerCoverTrackStyle"
+                tools:ignore="MissingConstraints"
+                tools:src="@drawable/placeholder" />
+
+            <TextView
+                android:id="@+id/trackName"
+                style="@style/TrackNameStyle"
+                tools:ignore="MissingConstraints"
+                tools:text="Yesterday (Remastered 2009)" />
+
+            <TextView
+                android:id="@+id/artistName"
+                style="@style/ArtistNameStyle"
+                tools:ignore="MissingConstraints"
+                tools:text="The Beatles" />
+
+            <TextView
+                android:id="@+id/country_field"
+                style="@style/TrackFieldStyle"
+                android:layout_marginBottom="28dp"
+                android:text="Страна"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/country"
+                style="@style/TrackInfoStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/country_field"
+                app:layout_constraintStart_toEndOf="@id/country_field"
+                tools:text="Великобритания" />
+
+            <TextView
+                android:id="@+id/primaryGenreName_field"
+                style="@style/TrackFieldStyle"
+                android:text="Жанр"
+                app:layout_constraintBottom_toTopOf="@id/country_field"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/primary_GenreName"
+                style="@style/TrackInfoStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/primaryGenreName_field"
+                app:layout_constraintStart_toEndOf="@id/primaryGenreName_field"
+                tools:text="Rock" />
+
+            <TextView
+                android:id="@+id/releaseDate_field"
+                style="@style/TrackFieldStyle"
+                android:text="Год"
+                app:layout_constraintBottom_toTopOf="@id/primaryGenreName_field"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/release_Date"
+                style="@style/TrackInfoStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/releaseDate_field"
+                app:layout_constraintStart_toEndOf="@id/releaseDate_field"
+                tools:text="1965" />
+
+            <TextView
+                android:id="@+id/collectionName_field"
+                style="@style/TrackFieldStyle"
+                android:text="Альбом"
+                app:layout_constraintBottom_toTopOf="@id/releaseDate_field"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/collection_Name"
+                style="@style/TrackInfoStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/collectionName_field"
+                app:layout_constraintStart_toEndOf="@id/collectionName_field"
+                tools:text="Yesterday (Remastered 2009)" />
+
+            <TextView
+                android:id="@+id/trackTime_field"
+                style="@style/TrackFieldStyle"
+                android:text="Длительность"
+                app:layout_constraintBottom_toTopOf="@id/collectionName_field"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/trackTimeResult"
+                style="@style/TrackInfoStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/trackTime_field"
+                app:layout_constraintStart_toEndOf="@id/trackTime_field"
+                tools:text="5:35" />
+
+            <ImageButton
+                android:id="@+id/btnPlay"
+                style="@style/playButtonStyle"
+                app:srcCompat="@drawable/ic_play"
+                tools:ignore="MissingConstraints" />
+
+            <ImageButton
+                android:id="@+id/btnAdd"
+                style="@style/addButtonStyle"
+                app:srcCompat="@drawable/ic_add"
+                tools:ignore="MissingConstraints" />
+
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                style="@style/favoriteButtonStyle"
+                app:srcCompat="@drawable/ic_favorite"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/progressTime"
+                style="@style/progressTimeStyle"
+                android:text="00:00"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/playlist_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_shape"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="240dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_bottom" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:text="Добавить в плейлист"
+            android:textColor="@color/text_gray"
+            android:textColorHint="@color/text_gray"
+            android:textSize="19sp" />
+
+        <Button
+            android:id="@+id/create_playlist_bottom_sheet_button"
+            style="@style/bottomSheetStyle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlists_bottom_sheet_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

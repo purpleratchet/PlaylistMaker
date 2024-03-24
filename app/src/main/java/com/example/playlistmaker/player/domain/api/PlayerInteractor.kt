@@ -10,7 +10,7 @@ interface PlayerInteractor {
 
 
     fun setOnCompletionListener(onCompletionListener: () -> Unit)
-
+    fun seekTo(position: String)
     fun getCurrentPosition(): Int
     fun startPlayer(onStartPlayer: () -> Unit)
     fun pausePlayer(onPausePlayer: () -> Unit)

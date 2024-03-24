@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="playerCoverTrack">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="layout_constraintBottom_toTopOf">@id/trackName</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+        <item name="layout_constraintEnd_toStartOf">@id/rightBorder</item>
+        <item name="layout_constraintStart_toStartOf">@id/leftBorder</item>
+        <item name="layout_constraintTop_toBottomOf">@id/btnPlayerBack</item>
+
+    </style>
+</resources>

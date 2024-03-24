@@ -15,9 +15,11 @@ import com.example.playlistmaker.utils.SHARED_PREFERENCES
 import com.example.playlistmaker.utils.iTunesBaseUrl
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.scope.get
+
 import androidx.room.Room
 import com.example.playlistmaker.library.data.db.AppDatabase
+import com.example.playlistmaker.library.data.db.PlaylistDatabase
+import com.example.playlistmaker.library.data.db.PlaylistTrackDatabase
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -64,4 +66,17 @@ val dataModule = module {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .build()
     }
+
+    single<PlaylistDatabase> {
+        Room.databaseBuilder(androidContext(), PlaylistDatabase::class.java, "playlist_database.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    single<PlaylistTrackDatabase> {
+        Room.databaseBuilder(androidContext(), PlaylistTrackDatabase::class.java, "playlist_track_databases.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
 }

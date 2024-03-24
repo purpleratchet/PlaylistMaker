@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="18dp"
     android:paddingTop="16dp"
     android:theme="@style/Theme.PlaylistMaker"
     android:background="@color/main_white">
@@ -20,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/ys_display_regular"
             android:gravity="center"
             android:textColor="@color/main_black"
@@ -37,6 +36,7 @@
         android:id="@+id/libraryTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="18dp"
         app:tabIndicatorColor="@color/main_black"
         app:tabTextColor="@color/main_black"
         android:fontFamily="@font/ys_display_regular"
@@ -45,6 +45,7 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
+        android:paddingHorizontal="18dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
