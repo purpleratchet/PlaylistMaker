@@ -161,7 +161,7 @@ class PlayerFragment : Fragment() {
         }
 
         binding.createPlaylistBottomSheetButton.setOnClickListener {
-            viewModel.releaseAudioPlayer()
+            viewModel.pauseAudioPlayer()
             findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment)
         }
     }

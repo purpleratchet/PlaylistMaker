@@ -80,7 +80,7 @@ class PlayerViewModel(
         }
 
     }
-    private fun pauseAudioPlayer(): () -> Unit = {
+    fun pauseAudioPlayer(): () -> Unit = {
         currentPosition = getCurrentPosition()
         playerInteractor.pausePlayer {
             timerJob?.cancel()

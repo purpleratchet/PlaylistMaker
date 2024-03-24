@@ -150,7 +150,7 @@ class SearchFragment : Fragment() {
         binding.refresh.visibility = View.GONE
         binding.rvSearchResult.visibility = View.VISIBLE
         binding.historyMessage.visibility = View.GONE
-        binding.clearHistoryButton.visibility = View.GONE
+        //binding.clearHistoryButton.visibility = View.GONE
         trackAdapter.tracks.clear()
         trackAdapter.tracks.addAll(tracks)
         trackAdapter.notifyDataSetChanged()
