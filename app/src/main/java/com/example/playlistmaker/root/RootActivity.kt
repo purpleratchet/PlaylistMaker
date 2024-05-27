@@ -18,11 +18,13 @@ class RootActivity : AppCompatActivity(), BottomNavigationListener {
         binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
-        val navController = navHostFragment.navController
+            supportFragmentManager.findFragmentById(R.id.container_view) as? NavHostFragment
+        val navController = navHostFragment?.navController
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        binding.bottomNavigationView.setupWithNavController(navController)
+        if (navController != null) {
+            binding.bottomNavigationView.setupWithNavController(navController)
+        }
     }
 
     override fun toggleBottomNavigationViewVisibility(visible: Boolean) {

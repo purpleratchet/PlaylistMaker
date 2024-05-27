@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -170,22 +171,25 @@ class PlayerFragment : Fragment() {
         playButton = binding.btnPlay
         timer = binding.progressTime
     }
+
     private fun playButtonImage(isPlaying: Boolean): Int {
         val playIcon = if (isDarkTheme()) R.drawable.ic_play_dark else R.drawable.ic_play
         val pauseIcon = if (isDarkTheme()) R.drawable.ic_pause_dark else R.drawable.ic_pause
         return if (isPlaying) pauseIcon else playIcon
     }
+
     private fun isDarkTheme(): Boolean {
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
+
     private fun preparePlayer(track: TrackSearchModel) {
         binding.apply {
             trackName.text = track.trackName
             artistName.text = track.artistName
             trackTimeResult.text = track.trackTimeMillis
             collectionName.text = track.collectionName
-            releaseDate.text = track.releaseDate?.substring(0, 4)
+            releaseDate.text = track.releaseDate.substring(0, 4)
             primaryGenreName.text = track.primaryGenreName
             country.text = track.country
             progressTime.text = getString(R.string.default_playtime_value)
@@ -215,6 +219,7 @@ class PlayerFragment : Fragment() {
         viewModel.checkAndAddTrackToPlaylist(playlist, track)
 
     }
+
     companion object {
         const val EXTRA_TRACK = "EXTRA_TRACK"
 
@@ -225,6 +230,10 @@ class PlayerFragment : Fragment() {
             val fragment = PlayerFragment()
             fragment.arguments = args
             return fragment
+        }
+
+        fun createArgs(track: TrackSearchModel): Bundle {
+            return bundleOf(EXTRA_TRACK to track)
         }
     }
 }

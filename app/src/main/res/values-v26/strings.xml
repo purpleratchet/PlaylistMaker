@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="share_playlist">Поделиться</string>
+    <string name="share_app_not_found">Приложение не найдено</string>
+</resources>

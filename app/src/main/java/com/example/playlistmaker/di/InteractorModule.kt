@@ -1,7 +1,9 @@
 package com.example.playlistmaker.di
+import com.example.playlistmaker.library.domain.api.CurrentPlaylistInteractor
 import com.example.playlistmaker.library.domain.api.FavoritesInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistDatabaseInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistMediaDatabaseInteractor
+import com.example.playlistmaker.library.domain.impl.CurrentPlaylistInteractorImpl
 import com.example.playlistmaker.library.domain.impl.FavoritesInteractorImpl
 import com.example.playlistmaker.library.domain.impl.PlaylistDatabaseInteractorImpl
 import com.example.playlistmaker.library.domain.impl.PlaylistMediaDatabaseInteractorImpl
@@ -41,5 +43,8 @@ val interactorModule = module {
 
     single<PlaylistTrackDatabaseInteractor> {
         PlaylistTrackDatabaseInteractorImpl(playlistTrackDatabaseRepository = get())
+    }
+    single<CurrentPlaylistInteractor> {
+        CurrentPlaylistInteractorImpl(currentPlaylistRepository = get())
     }
 }

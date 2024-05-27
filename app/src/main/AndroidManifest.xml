@@ -21,10 +21,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".player.ui.PlayerActivity"
-            android:exported="false"
-            />
-        <activity
             android:name=".root.RootActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing"
