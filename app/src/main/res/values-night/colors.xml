@@ -13,4 +13,5 @@
     <color name="gray2">#E6E8EB</color>
     <color name="main_black">#E6E8EB</color>
     <color name="main_white">#FF000000</color>
+    <color name="red">#FFFF0000</color>
 </resources>

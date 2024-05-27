@@ -24,7 +24,7 @@ class TracksViewHolder(
     fun bind(model: TrackSearchModel) {
         Glide.with(itemView)
             .load(model.artworkUrl100)
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.playlist_placeholder)
             .transform(
                 CenterCrop(),
                 RoundedCorners(dpToPx(2F, itemView.context))
