@@ -7,5 +7,6 @@ sealed interface ScreenState {
     data class SavedState(val tracks: ArrayList<TrackSearchModel>) : ScreenState
     data class ErrorState(val errorMessage: String) : ScreenState
     data class EmptyState(val message: String) : ScreenState
+    object Initial: ScreenState
 
 }

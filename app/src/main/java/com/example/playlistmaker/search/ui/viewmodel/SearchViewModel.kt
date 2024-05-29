@@ -30,6 +30,7 @@ class SearchViewModel(
     init {
         viewModelScope.launch {
             savedTracks.addAll(searchInteractor.returnSavedTracks())
+            renderState(ScreenState.Initial)
         }
     }
 
@@ -98,14 +99,15 @@ class SearchViewModel(
                 )
             )
 
-            else -> renderState(ScreenState.SearchedState(tracks))
+            tracks.size > 0 -> renderState(ScreenState.SearchedState(tracks))
+            else  -> renderState(ScreenState.Initial)
         }
     }
 
     fun clearHistory() {
         searchInteractor.clearSavedTracks()
         savedTracks.clear()
-        _stateLiveData.value = ScreenState.SavedState(savedTracks)
+        _stateLiveData.value = ScreenState.Initial
     }
 
     fun showHistoryTracks() {

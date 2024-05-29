@@ -1,4 +1,5 @@
 package com.example.playlistmaker.search.ui
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -21,6 +22,7 @@ import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel.Companion.EXTRA_TRACK
 import com.example.playlistmaker.utils.Debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 class SearchFragment : Fragment() {
     private var userInput = ""
     private val trackAdapter = TracksAdapter {
@@ -34,6 +36,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private lateinit var onTrackClickDebounce: (TrackSearchModel) -> Unit
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +45,7 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvSearchResult.adapter = trackAdapter
@@ -63,13 +67,15 @@ class SearchFragment : Fragment() {
         viewModel.getSavedTracksLiveData()
             .observe(viewLifecycleOwner) { savedTrackAdapter.updateTracks(it) }
     }
+
     private fun setListeners() {
         binding.refresh.setOnClickListener {
             viewModel.search(userInput)
         }
         binding.clearImageView.setOnClickListener {
             binding.searchEditText.setText("")
-            binding.historyMessage.visibility = View.VISIBLE
+//            binding.historyMessage.visibility = View.VISIBLE
+//            binding.clearHistoryButton.visibility = View.VISIBLE
             val inputMethodManager =
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
@@ -87,22 +93,24 @@ class SearchFragment : Fragment() {
                 userInput = s.toString()
                 viewModel.searchDebounce(userInput)
                 binding.historyMessage.visibility = View.GONE
-                binding.clearHistoryButton.visibility = View.GONE
             }
+
             override fun afterTextChanged(s: Editable?) {
                 binding.historyMessage.visibility = View.GONE
-                binding.clearHistoryButton.visibility = View.GONE
+
             }
         }
         textWatcher?.let { binding.searchEditText.addTextChangedListener(it) }
     }
+
     private fun updateViewVisibility(s: CharSequence?) {
         binding.clearImageView.visibility = clearButtonVisibility(s)
         binding.rvSearchResult.visibility = View.GONE
         binding.rvHistory.visibility = View.VISIBLE
         binding.historyMessage.visibility = View.VISIBLE
-        binding.clearHistoryButton.visibility = View.VISIBLE
+
     }
+
     private fun searchHistory() {
         binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.searchEditText.text.isEmpty()) {
@@ -110,8 +118,10 @@ class SearchFragment : Fragment() {
             }
         }
     }
+
     private fun render(state: ScreenState) {
         when (state) {
+            is ScreenState.Initial  -> Initial()
             is ScreenState.Loading -> Loading()
             is ScreenState.SearchedState -> SearchedState(state.tracks)
             is ScreenState.SavedState -> SavedState(state.tracks)
@@ -119,11 +129,25 @@ class SearchFragment : Fragment() {
             is ScreenState.EmptyState -> EmptyState(state.message)
         }
     }
+
+    private fun Initial()  {
+        binding.progressBar.visibility = View.GONE
+        binding.noResults.visibility = View.GONE
+        binding.noInternet.visibility = View.GONE
+        binding.refresh.visibility = View.GONE
+        binding.rvSearchResult.visibility = View.GONE
+        binding.rvHistory.visibility = View.VISIBLE
+        binding.historyMessage.visibility = View.VISIBLE
+        binding.clearHistoryButton.visibility = View.VISIBLE
+        binding.clearImageView.visibility = View.GONE
+        hideKeyboard()
+    }
     private fun Loading() {
         binding.progressSearch.visibility = View.VISIBLE
         binding.progressBar.visibility = View.VISIBLE
         hideKeyboard()
     }
+
     private fun ErrorState(errorMessage: String) {
         binding.progressBar.visibility = View.GONE
         binding.noInternet.visibility = View.VISIBLE
@@ -133,12 +157,14 @@ class SearchFragment : Fragment() {
         binding.textViewNoResults.text = errorMessage
         hideKeyboard()
     }
+
     private fun EmptyState(message: String) {
         binding.progressBar.visibility = View.GONE
         binding.noResults.visibility = View.VISIBLE
         binding.imageViewNoResults.setImageResource(R.drawable.ic_no_results)
         binding.textViewNoResults.text = message
     }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun SearchedState(tracks: ArrayList<TrackSearchModel>) {
         binding.historyMessage.visibility = View.VISIBLE
@@ -150,11 +176,12 @@ class SearchFragment : Fragment() {
         binding.refresh.visibility = View.GONE
         binding.rvSearchResult.visibility = View.VISIBLE
         binding.historyMessage.visibility = View.GONE
-        //binding.clearHistoryButton.visibility = View.GONE
+        binding.clearHistoryButton.visibility = View.GONE
         trackAdapter.tracks.clear()
         trackAdapter.tracks.addAll(tracks)
         trackAdapter.notifyDataSetChanged()
     }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun SavedState(tracks: ArrayList<TrackSearchModel>) {
         binding.noResults.visibility = View.GONE
@@ -165,6 +192,7 @@ class SearchFragment : Fragment() {
         savedTrackAdapter.tracks.addAll(tracks)
         savedTrackAdapter.notifyDataSetChanged()
     }
+
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -172,21 +200,26 @@ class SearchFragment : Fragment() {
             View.VISIBLE
         }
     }
+
     fun Fragment.hideKeyboard() {
         val inputMethodManager =
             requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = activity?.currentFocus ?: View(requireContext())
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     override fun onDestroyView() {
         textWatcher?.let { binding.searchEditText.removeTextChangedListener(it) }
         super.onDestroyView()
         _binding = null
     }
+
     override fun onResume() {
         super.onResume()
         viewModel.isEqual()
+
     }
+
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 300L
     }

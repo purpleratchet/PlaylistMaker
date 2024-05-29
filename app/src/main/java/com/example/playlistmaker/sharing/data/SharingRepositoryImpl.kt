@@ -15,12 +15,14 @@ class SharingRepositoryImpl(
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.shareApp))
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
 
     override fun sendSupportEmail() {
         val feedbackIntent = Intent().apply {
             action = Intent.ACTION_SENDTO
+            setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(R.string.sendToEmail)))
             putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.sendHeader))
@@ -40,6 +42,7 @@ class SharingRepositoryImpl(
 
     override fun openAgreementUrl() {
         val intent = Intent(Intent.ACTION_VIEW)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.data = Uri.parse(context.getString(R.string.agreementUrl))
         context.startActivity(intent)
     }
