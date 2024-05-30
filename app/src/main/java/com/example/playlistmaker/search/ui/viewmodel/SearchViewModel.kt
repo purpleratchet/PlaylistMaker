@@ -133,6 +133,7 @@ class SearchViewModel(
     fun resetSearchState() {
         tracks.clear()
         latestSearchText = null
+
         renderState(ScreenState.Initial)
     }
 

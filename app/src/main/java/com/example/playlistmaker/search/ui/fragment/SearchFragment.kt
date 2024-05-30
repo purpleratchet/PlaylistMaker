@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -79,7 +80,7 @@ class SearchFragment : Fragment() {
         }
         binding.clearHistoryButton.setOnClickListener {
             viewModel.clearHistory()
-            binding.rvSearchResult.visibility = View.GONE
+            binding.rvHistory.visibility = View.GONE
             binding.historyMessage.visibility = View.GONE
             binding.clearHistoryButton.visibility = View.GONE
         }
@@ -96,7 +97,8 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-//                binding.historyMessage.visibility = View.GONE
+                updateViewVisibility(s)
+                binding.historyMessage.visibility = View.GONE
 //                binding.clearHistoryButton.visibility = View.GONE
             }
         }
@@ -145,9 +147,12 @@ class SearchFragment : Fragment() {
         binding.refresh.visibility = View.GONE
         binding.rvSearchResult.visibility = View.GONE
         binding.rvHistory.visibility = View.VISIBLE
-        binding.historyMessage.visibility = View.VISIBLE
-        binding.clearHistoryButton.visibility = View.VISIBLE
+        if (binding.rvHistory.get(0) == null)  {
+            binding.historyMessage.visibility = View.GONE
+            binding.clearHistoryButton.visibility = View.GONE
+        }
         binding.clearImageView.visibility = View.GONE
+        binding.searchEditText.setText("")
         hideKeyboard()
     }
 
@@ -195,6 +200,8 @@ class SearchFragment : Fragment() {
         binding.refresh.visibility = View.GONE
         binding.rvSearchResult.visibility = View.GONE
         binding.rvHistory.visibility = View.VISIBLE
+        binding.historyMessage.visibility = View.VISIBLE
+        binding.clearHistoryButton.visibility = View.VISIBLE
         savedTrackAdapter.tracks.clear()
         savedTrackAdapter.tracks.addAll(tracks)
         savedTrackAdapter.notifyDataSetChanged()
@@ -224,6 +231,7 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.isEqual()
+        binding.searchEditText.setText("")
         viewModel.resetSearchState() // Reset search state on resume
     }
 
