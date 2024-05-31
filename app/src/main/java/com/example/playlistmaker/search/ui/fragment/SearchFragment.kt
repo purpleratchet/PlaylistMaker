@@ -146,11 +146,11 @@ class SearchFragment : Fragment() {
         binding.noInternet.visibility = View.GONE
         binding.refresh.visibility = View.GONE
         binding.rvSearchResult.visibility = View.GONE
-        binding.rvHistory.visibility = View.VISIBLE
-        if (binding.rvHistory.get(0) == null)  {
+//        binding.rvHistory.visibility = View.VISIBLE
+//        if (binding.rvHistory.get(0) == null)  {
             binding.historyMessage.visibility = View.GONE
             binding.clearHistoryButton.visibility = View.GONE
-        }
+//        }
         binding.clearImageView.visibility = View.GONE
         binding.searchEditText.setText("")
         hideKeyboard()

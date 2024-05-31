@@ -13,10 +13,20 @@
         android:layout_height="match_parent"
         android:background="@color/text_gray">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/playlist_info_bottom_sheet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="NotSibling">
+
         <ImageView
             android:id="@+id/playlist_info_cover_imageview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@color/main_white"
             android:scaleType="center"
             app:layout_constraintDimensionRatio="1:1"
@@ -24,20 +34,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/placeholder_max" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <TextView
             android:id="@+id/name_of_playlist_info_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:background="@color/text_gray"
             android:fontFamily="@font/ys_display_bold"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/playlist_info_cover_imageview"
-            tools:text="Best songs 2023" />
+            app:layout_constraintTop_toBottomOf="@id/constraint"
+            tools:text="Best songs 2023"
+            tools:ignore="NotSibling" />
 
         <TextView
             android:id="@+id/year_of_playlist_info_textview"
@@ -126,6 +139,8 @@
             android:src="@drawable/menu_playlist"
             app:layout_constraintStart_toEndOf="@id/playlist_info_share_imageview"
             app:layout_constraintTop_toBottomOf="@id/playlist_info_data_string_linearlayout" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -108,6 +108,7 @@ class SearchViewModel(
     fun clearHistory() {
         searchInteractor.clearSavedTracks()
         savedTracks.clear()
+        savedTracksLiveData.postValue(ArrayList())
         _stateLiveData.value = ScreenState.Initial
     }
 
