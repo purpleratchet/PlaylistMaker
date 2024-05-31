@@ -1,9 +1,11 @@
 package com.example.playlistmaker.library.ui.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentLibraryBinding
@@ -38,6 +40,18 @@ class LibraryFragment : Fragment() {
                 }
             }
         tabMediator.attach()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideKeyboard()
+    }
+
+    private fun Fragment.hideKeyboard() {
+        val inputMethodManager =
+            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = activity?.currentFocus ?: View(requireContext())
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onDestroy() {

@@ -30,6 +30,7 @@ class SearchViewModel(
     init {
         viewModelScope.launch {
             savedTracks.addAll(searchInteractor.returnSavedTracks())
+            renderState(ScreenState.Initial)
         }
     }
 
@@ -66,6 +67,7 @@ class SearchViewModel(
 
     fun search(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
+            tracks.clear()  // Clear previous results
             renderState(ScreenState.Loading)
             viewModelScope.launch {
                 searchInteractor.searchTracks(newSearchText)
@@ -98,19 +100,23 @@ class SearchViewModel(
                 )
             )
 
-            else -> renderState(ScreenState.SearchedState(tracks))
+            tracks.size > 0 -> renderState(ScreenState.SearchedState(tracks))
+            else  -> renderState(ScreenState.Initial)
         }
     }
 
     fun clearHistory() {
         searchInteractor.clearSavedTracks()
         savedTracks.clear()
-        _stateLiveData.value = ScreenState.SavedState(savedTracks)
+        savedTracksLiveData.postValue(ArrayList())
+        _stateLiveData.value = ScreenState.Initial
     }
 
     fun showHistoryTracks() {
         if (savedTracks.size > 0) {
             renderState(ScreenState.SavedState(savedTracks))
+        } else {
+            renderState(ScreenState.Initial)
         }
     }
 
@@ -122,6 +128,14 @@ class SearchViewModel(
             savedTracks.addAll(sharedPrefsTracks)
             savedTracksLiveData.postValue(sharedPrefsTracks)
         }
+    }
+
+    // New method to reset the search state
+    fun resetSearchState() {
+        tracks.clear()
+        latestSearchText = null
+
+        renderState(ScreenState.Initial)
     }
 
     companion object {

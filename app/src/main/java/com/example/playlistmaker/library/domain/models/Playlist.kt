@@ -1,6 +1,7 @@
 package com.example.playlistmaker.library.domain.models
 
 import com.example.playlistmaker.library.data.db.entity.PlaylistEntity
+import java.io.Serializable
 
 data class Playlist(
     val id: Long = 0,
@@ -8,8 +9,9 @@ data class Playlist(
     val description: String,
     val filePath: String,
     val listOfTracksId: String = "",
-    val amountOfTracks: Int
-)
+    val amountOfTracks: Int,
+    val insertTimeStamp: Long? = 0L
+) : Serializable
 
 fun Playlist.mapToPlaylistEntity(): PlaylistEntity = PlaylistEntity(
     id = id,
@@ -17,7 +19,8 @@ fun Playlist.mapToPlaylistEntity(): PlaylistEntity = PlaylistEntity(
     description = description,
     filePath = filePath,
     listOfTracksId = listOfTracksId,
-    amountOfTracks = amountOfTracks
+    amountOfTracks = amountOfTracks,
+    insertTimeStamp = insertTimeStamp
 )
 
 fun PlaylistEntity.mapToPlaylist(): Playlist = Playlist(
@@ -26,5 +29,6 @@ fun PlaylistEntity.mapToPlaylist(): Playlist = Playlist(
     description = description,
     filePath = filePath,
     listOfTracksId = listOfTracksId,
-    amountOfTracks = amountOfTracks
+    amountOfTracks = amountOfTracks,
+    insertTimeStamp = insertTimeStamp
 )

@@ -440,6 +440,24 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
-
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <!-- Style for negative button -->
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <!-- text color for the button -->
+        <item name="android:textColor">@color/blue</item>
+        <!-- Background tint for the button -->
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <!-- text color for the button -->
+        <item name="android:textColor">@color/blue</item>
+        <!-- Background tint for the button -->
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
 
 </resources>

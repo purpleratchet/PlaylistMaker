@@ -61,14 +61,16 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun clickOnItem(playlist: Playlist) {
-        Toast.makeText(requireContext(), "Выбран плейлист ${playlist.name}", Toast.LENGTH_SHORT)
-            .show()
+        findNavController().navigate(
+            R.id.action_medialibraryFragment_to_playlistInfoFragment,
+            PlaylistInfoFragment.createArgs(playlist)
+        )
     }
 
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
-            isClickAllowed = false
+            isClickAllowed = true
 
             viewLifecycleOwner.lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY)

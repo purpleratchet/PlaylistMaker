@@ -24,4 +24,23 @@
     <string name="no_favorites">Ваша медиатека пуста</string>
     <string name="no_playlists">Вы не создали
         \nни одного плейлиста</string>
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_track_title">Удалить трек</string>
+    <string name="delete_track_message">Хотите удалить трек?</string>
+    <string name="delete_playlist_title">Удалить плейлист</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="ok">OK</string>
+    <string name="share_empty_playlist">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="delete_playlist_ask">Хотите удалить плейлист?</string>
+
+    <!--/PlaylistInfoFragment-->
+
+    <!--EditPlaylistFragment-->
+
+    <string name="edit_current_playlist">Редактировать</string>
+    <string name="save_button_edit">Сохранить</string>
+    <string name="share_app_not_found">Приложение не найдено</string>
 </resources>

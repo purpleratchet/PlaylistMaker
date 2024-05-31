@@ -11,5 +11,6 @@ data class PlaylistEntity(
     val description: String,
     val filePath: String,
     val listOfTracksId: String = "",
-    val amountOfTracks: Int
+    val amountOfTracks: Int,
+    val insertTimeStamp: Long? = 0L
 )
